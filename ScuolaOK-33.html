@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScuolaOK!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --t:#2eaab1; --td:#1d8a91; --tl:#e8f7f8; --tm:#b2e2e5;
+  --gr:#27ae60; --grb:#eafaf1;
+  --or:#f5a623; --orb:#fff8ee;
+  --re:#e74c3c; --reb:#fdf0ef;
+  --bl:#3498db; --blb:#ebf5fb;
+  --gy:#7f8c8d; --gyl:#ecf0f1; --gym:#bdc3c7;
+  --tx:#2c3e50; --sb:#1a7a80;
+  --sh:0 2px 12px rgba(0,0,0,.10);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Nunito Sans',sans-serif; background:#f0f4f5; color:var(--tx); min-height:100vh; }
+.hidden { display:none !important; }
+button, input, select, textarea { font-family:inherit; }
+button { cursor:pointer; }
+
+/* BUTTONS */
+.btn { display:inline-flex; align-items:center; gap:5px; padding:8px 16px; border-radius:20px; border:none; font-weight:700; font-size:13px; transition:all .15s; white-space:nowrap; }
+.bt  { background:var(--t); color:#fff; }    .bt:hover  { background:var(--td); }
+.bo  { background:transparent; color:var(--t); border:2px solid var(--t); } .bo:hover { background:var(--tl); }
+.br  { background:var(--re); color:#fff; }   .br:hover  { background:#c0392b; }
+.bg  { background:var(--gr); color:#fff; }
+.bor { background:var(--or); color:#fff; }
+.bsm { padding:4px 10px; font-size:11px; border-radius:14px; }
+
+/* LOGIN */
+#LP { min-height:100vh; background:linear-gradient(135deg,#1a7a80,#2eaab1,#3fc1c9); display:flex; align-items:center; justify-content:center; padding:20px; }
+.lbox { background:#fff; border-radius:20px; padding:44px 40px 36px; width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,.2); animation:pop .3s ease; }
+@keyframes pop { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+.llogo { text-align:center; margin-bottom:24px; }
+.lico  { width:60px; height:60px; background:linear-gradient(135deg,#2eaab1,#1d8a91); border-radius:14px; display:inline-flex; align-items:center; justify-content:center; font-size:28px; margin-bottom:10px; }
+.llogo h1 { font-family:'Nunito',sans-serif; font-size:26px; font-weight:900; color:var(--td); }
+.llogo p  { color:var(--gy); font-size:12px; margin-top:2px; }
+.fg { margin-bottom:14px; }
+.fg label { display:block; font-weight:700; font-size:12px; margin-bottom:5px; }
+.fg input { width:100%; padding:11px 14px; border:2px solid var(--gyl); border-radius:9px; font-size:14px; outline:none; }
+.fg input:focus { border-color:var(--t); }
+.lbtn { width:100%; padding:13px; border-radius:12px; border:none; background:linear-gradient(135deg,#2eaab1,#1d8a91); color:#fff; font-size:15px; font-weight:900; cursor:pointer; transition:all .2s; margin-top:4px; }
+.lbtn:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(46,170,177,.4); }
+.ldiv { text-align:center; color:var(--gym); font-size:12px; margin:14px 0; position:relative; }
+.ldiv::before,.ldiv::after { content:''; position:absolute; top:50%; width:40%; height:1px; background:var(--gyl); }
+.ldiv::before { left:0; } .ldiv::after { right:0; }
+.rbtn { width:100%; padding:11px; border-radius:12px; border:2px solid var(--t); background:transparent; color:var(--t); font-size:14px; font-weight:800; cursor:pointer; }
+.rbtn:hover { background:var(--tl); }
+.errb { background:var(--reb); color:var(--re); border-radius:8px; padding:9px 13px; font-size:13px; font-weight:600; margin-bottom:12px; }
+
+/* SHELL */
+#APP { display:flex; flex-direction:column; min-height:100vh; }
+.ahdr { background:#fff; border-bottom:2px solid var(--tm); padding:0 22px; height:58px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(46,170,177,.08); }
+.hlog { display:flex; align-items:center; gap:9px; font-family:'Nunito',sans-serif; font-weight:900; font-size:20px; color:var(--td); }
+.hlm  { width:34px; height:34px; background:linear-gradient(135deg,#2eaab1,#1d8a91); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+.hsc  { font-size:11px; color:var(--gy); font-weight:600; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.husr { display:flex; align-items:center; gap:9px; font-size:13px; font-weight:700; }
+.av   { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,#2eaab1,#1d8a91); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:13px; }
+.abody { display:flex; flex:1; }
+
+/* SIDEBAR */
+.sbar { width:68px; background:var(--sb); display:flex; flex-direction:column; align-items:center; padding:14px 0; gap:3px; position:sticky; top:58px; height:calc(100vh - 58px); overflow-y:auto; }
+.si   { width:50px; height:50px; border-radius:11px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:rgba(255,255,255,.65); font-size:9px; font-weight:700; gap:2px; text-align:center; border:none; background:transparent; transition:all .15s; }
+.si:hover,.si.act { background:rgba(255,255,255,.18); color:#fff; }
+.si .ic { font-size:20px; line-height:1; }
+.sdiv { width:38px; height:1px; background:rgba(255,255,255,.2); margin:5px 0; }
+.mc   { flex:1; padding:20px 24px; overflow-y:auto; min-width:0; }
+
+/* CARD */
+.card { background:#fff; border-radius:12px; box-shadow:var(--sh); overflow:hidden; }
+.chdr { background:var(--t); color:#fff; padding:12px 18px; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:space-between; }
+
+/* TABLE */
+.tbl { width:100%; border-collapse:collapse; }
+.tbl th { background:var(--t); color:#fff; padding:10px 12px; text-align:left; font-size:11px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; white-space:nowrap; }
+.tbl td { padding:9px 12px; border-bottom:1px solid var(--gyl); font-size:13px; vertical-align:middle; }
+.tbl tr:last-child td { border-bottom:none; }
+.tbl tr:hover td { background:var(--tl); }
+.tscr { overflow-x:auto; }
+
+/* GRADE */
+.grade { display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:28px; border-radius:5px; padding:0 6px; font-weight:900; font-size:14px; font-family:'Nunito',sans-serif; }
+.cg { background:var(--gr); color:#fff; }
+.co { background:var(--or); color:#fff; }
+.cr { background:var(--re); color:#fff; }
+.cb { background:var(--bl); color:#fff; }
+.ce { background:var(--gyl); color:var(--gy); }
+
+/* VOTO CELL full-size */
+.vc  { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:52px; border-radius:4px; cursor:pointer; transition:opacity .15s; gap:1px; padding:4px; }
+.vc:hover { opacity:.82; }
+.vcN { font-family:'Nunito',sans-serif; font-weight:900; font-size:16px; color:#fff; }
+.vcS { font-size:9px; color:rgba(255,255,255,.85); }
+.ve  { background:var(--gyl); border-radius:4px; width:100%; min-height:52px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.ve:hover { background:var(--tm); }
+
+/* STAT */
+.sc  { background:#fff; border-radius:12px; padding:16px 18px; box-shadow:var(--sh); border-left:4px solid var(--t); }
+.sc.or { border-left-color:var(--or); } .sc.re { border-left-color:var(--re); } .sc.gr { border-left-color:var(--gr); }
+.scn { font-family:'Nunito',sans-serif; font-weight:900; font-size:28px; }
+.scl { font-size:11px; color:var(--gy); font-weight:700; margin-top:2px; }
+
+/* MODAL */
+.mov { position:fixed; inset:0; background:rgba(0,0,0,.48); display:flex; align-items:center; justify-content:center; z-index:999; padding:16px; animation:fi .18s; }
+@keyframes fi { from{opacity:0} to{opacity:1} }
+.modal { background:#fff; border-radius:16px; width:100%; max-width:600px; max-height:92vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.25); animation:su .22s ease; }
+.modal.mlg { max-width:860px; }
+@keyframes su { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:none} }
+.mhdr { background:var(--t); color:#fff; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; border-radius:16px 16px 0 0; position:sticky; top:0; z-index:10; }
+.mhdr h3 { font-family:'Nunito',sans-serif; font-weight:900; font-size:15px; }
+.mx   { width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,.25); border:none; color:#fff; cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center; }
+.mbody { padding:20px; }
+.mftr { padding:13px 20px; border-top:1px solid var(--gyl); display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; position:sticky; bottom:0; background:#fff; border-radius:0 0 16px 16px; }
+
+/* FORM */
+.fg2 { margin-bottom:14px; }
+.fg2 label { display:block; font-weight:700; font-size:12px; margin-bottom:5px; }
+.fg2 input,.fg2 select,.fg2 textarea { width:100%; padding:10px 12px; border:2px solid var(--gyl); border-radius:8px; font-size:13px; outline:none; color:var(--tx); }
+.fg2 input:focus,.fg2 select:focus,.fg2 textarea:focus { border-color:var(--t); }
+.fg2 textarea { min-height:70px; resize:vertical; }
+.fr  { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.fr3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+
+/* CLASS BAR */
+.cbar { background:#fff; border-radius:12px; padding:12px 18px; display:flex; align-items:center; gap:12px; margin-bottom:16px; box-shadow:var(--sh); flex-wrap:wrap; }
+.cnm  { font-family:'Nunito',sans-serif; font-weight:900; font-size:16px; }
+.ctabs { display:flex; gap:4px; flex-wrap:wrap; margin-left:auto; }
+.ct   { display:flex; flex-direction:column; align-items:center; padding:5px 9px; border-radius:7px; cursor:pointer; font-size:9px; font-weight:700; color:var(--t); border:none; background:transparent; transition:all .15s; gap:2px; }
+.ct:hover,.ct.act { background:var(--tl); }
+.ct .ci { font-size:18px; }
+
+/* EMPTY */
+.empty { background:#fff; border-radius:12px; padding:36px 24px; text-align:center; box-shadow:var(--sh); }
+.empty .ei { font-size:44px; margin-bottom:10px; }
+.empty h3  { font-family:'Nunito',sans-serif; font-weight:900; font-size:17px; margin-bottom:6px; }
+.empty p   { color:var(--gy); font-size:13px; margin-bottom:18px; }
+
+/* HOME CARD */
+.hcc { background:#fff; border-radius:12px; padding:18px; box-shadow:var(--sh); cursor:pointer; transition:all .15s; border-left:5px solid var(--t); margin-bottom:10px; }
+.hcc:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.12); }
+.hcc h3 { font-family:'Nunito',sans-serif; font-weight:900; font-size:18px; color:var(--td); }
+
+/* APPELLO */
+.ab { width:32px; height:32px; border-radius:50%; border:2px solid var(--gym); background:transparent; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; color:var(--gy); cursor:pointer; transition:all .15s; }
+.ab.P { border-color:var(--gr); color:var(--gr); background:var(--grb); }
+.ab.A { border-color:var(--re); color:var(--re); background:var(--reb); }
+.ab.R { border-color:var(--or); color:var(--or); background:var(--orb); }
+.ab.U { border-color:var(--bl); color:var(--bl); background:var(--blb); }
+.ab.F { border-color:var(--gy); color:var(--gy); background:var(--gyl); }
+
+/* ORARIO */
+.orgrid { display:grid; gap:3px; }
+.orora  { background:#fff; border-radius:5px; box-shadow:var(--sh); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:11px; color:var(--t); min-height:54px; }
+.orcell { background:#fff; border-radius:5px; box-shadow:var(--sh); min-height:54px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:10px; font-weight:700; text-align:center; gap:2px; cursor:pointer; transition:all .15s; padding:4px; position:relative; }
+.orcell:hover { background:var(--tl); }
+.orcell.today { background:var(--tl); border:2px solid var(--t); }
+.orcell.hasl  { border-left:3px solid var(--t); }
+.ored { position:absolute; top:3px; right:3px; font-size:10px; opacity:0; transition:opacity .15s; }
+.orcell:hover .ored { opacity:1; }
+
+/* STUDENT PROFILE */
+.sphdr { background:linear-gradient(135deg,var(--t),var(--td)); color:#fff; padding:22px; border-radius:12px 12px 0 0; text-align:center; }
+.spnm  { font-family:'Nunito',sans-serif; font-weight:900; font-size:21px; }
+.spst  { display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
+.spsi  { background:rgba(255,255,255,.2); border-radius:8px; padding:8px 14px; text-align:center; }
+.spsn  { font-family:'Nunito',sans-serif; font-weight:900; font-size:20px; }
+.spsl  { font-size:10px; opacity:.85; }
+
+/* TABS */
+.tbr { display:flex; border-bottom:2px solid var(--gyl); margin-bottom:14px; }
+.tbi { padding:9px 15px; cursor:pointer; font-weight:700; font-size:12px; color:var(--gy); border-bottom:3px solid transparent; margin-bottom:-2px; transition:all .15s; }
+.tbi.act { color:var(--t); border-bottom-color:var(--t); }
+
+/* INFO BOX */
+.info { background:var(--tl); border-left:4px solid var(--t); border-radius:0 8px 8px 0; padding:10px 14px; font-size:13px; margin-bottom:14px; }
+
+/* GRIDS */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+/* TOAST */
+.toast { position:fixed; top:68px; left:50%; transform:translateX(-50%); background:var(--gr); color:#fff; padding:11px 22px; border-radius:9px; font-weight:700; font-size:13px; box-shadow:0 8px 24px rgba(0,0,0,.15); z-index:9999; animation:ta .25s ease; pointer-events:none; }
+@keyframes ta { from{opacity:0;transform:translateX(-50%) translateY(-8px)} to{opacity:1;transform:translateX(-50%)} }
+
+@media(max-width:700px) {
+  .sbar{width:54px;} .si{width:42px;height:42px;}
+  .g2,.g3{grid-template-columns:1fr;} .fr{grid-template-columns:1fr;}
+  .mc{padding:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="LP">
+  <div class="lbox">
+    <div class="llogo">
+      <div class="lico">📚</div>
+      <h1>ScuolaOK!</h1>
+      <p>Registro Elettronico per Docenti</p>
+    </div>
+    <div id="lerr" class="errb hidden"></div>
+    <div id="LF">
+      <div class="fg"><label>Nome utente</label><input type="text" id="lu" autocomplete="username"></div>
+      <div class="fg"><label>Password</label><input type="password" id="lpw" autocomplete="current-password"></div>
+      <button class="lbtn" onclick="doLogin()">🔓 Accedi</button>
+      <div class="ldiv">oppure</div>
+      <button class="rbtn" onclick="showReg()">➕ Registrati — Crea il tuo account</button>
+    </div>
+    <div id="RF" class="hidden">
+      <div class="fg"><label>Nome completo</label><input type="text" id="rn"></div>
+      <div class="fg"><label>Nome della scuola</label><input type="text" id="rs"></div>
+      <div class="fg"><label>Materia principale</label><input type="text" id="rm"></div>
+      <div class="fg"><label>Nome utente</label><input type="text" id="ru" autocomplete="username"></div>
+      <div class="fg"><label>Password (min. 6 caratteri)</label><input type="password" id="rp" autocomplete="new-password"></div>
+      <button class="lbtn" onclick="doReg()">✅ Crea Account</button>
+      <div class="ldiv">oppure</div>
+      <button class="rbtn" onclick="showLogin()">← Torna al Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="APP" class="hidden">
+  <div class="ahdr">
+    <div class="hlog"><div class="hlm">📚</div>ScuolaOK!<span class="hsc" id="hSc"></span></div>
+    <div class="husr"><div class="av" id="hAv"></div><span id="hNm"></span>
+      <button class="btn bo bsm" onclick="doLogout()" style="margin-left:8px">Esci</button>
+    </div>
+  </div>
+  <div class="abody">
+    <div class="sbar">
+      <button class="si act" id="sb-home"      onclick="goto('home')">     <span class="ic">🏠</span>Home</button>
+      <button class="si"     id="sb-registro"  onclick="goto('registro')"> <span class="ic">📋</span>Registro</button>
+      <button class="si"     id="sb-scrutini"  onclick="goto('scrutini')"> <span class="ic">📊</span>Scrutini</button>
+      <div class="sdiv"></div>
+      <button class="si"     id="sb-bacheca"   onclick="goto('bacheca')">  <span class="ic">📌</span>Bacheca</button>
+      <button class="si"     id="sb-orario"    onclick="goto('orario')">   <span class="ic">🕐</span>Orario</button>
+      <button class="si"     id="sb-calendario" onclick="goto('calendario')"><span class="ic">📅</span>Calendario</button>
+      <div class="sdiv"></div>
+      <button class="si"     id="sb-classi"    onclick="goto('classi')">   <span class="ic">👥</span>Classi</button>
+      <button class="si"     id="sb-strumenti" onclick="goto('strumenti')"><span class="ic">⚙️</span>Strumenti</button>
+    </div>
+    <div class="mc" id="MC"></div>
+  </div>
+</div>
+
+<div id="MW"></div>
+<div id="TW"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// UTILITIES — defined first so everything can use them
+// ═══════════════════════════════════════════════════
+function gi(id)   { return document.getElementById(id); }
+function gv(id)   { const el=gi(id); return el ? el.value.trim() : ''; }
+function td()     { return new Date().toISOString().split('T')[0]; }
+function fmtD(iso){ if(!iso) return ''; const[y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
+function isoD(it) { if(!it||!it.includes('/')) return td(); const p=it.split('/'); return `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`; }
+function dSrt(a,b){ if(!a||!b) return 0; const p=s=>{const q=s.split('/');return new Date(q[2],q[1]-1,q[0]);}; return p(a)-p(b); }
+function togEl(id){ const e=gi(id); if(e) e.classList.toggle('hidden'); }
+function selAll(v){ document.querySelectorAll('.selA').forEach(c=>c.checked=v); }
+
+function toast(msg, isErr){
+  const t=document.createElement('div');
+  t.className='toast';
+  t.style.background=isErr?'var(--re)':'var(--gr)';
+  t.textContent=msg;
+  gi('TW').appendChild(t);
+  setTimeout(()=>t.remove(), 2800);
+  saveLS();
+}
+
+// ═══════════════════════════════════════════════════
+// LOCAL STORAGE
+// ═══════════════════════════════════════════════════
+function saveLS(){
+  try { localStorage.setItem('scuolaok_v1', JSON.stringify(DB.users)); } catch(e){}
+}
+function loadLS(){
+  try {
+    const raw = localStorage.getItem('scuolaok_v1');
+    if(raw) DB.users = JSON.parse(raw);
+  } catch(e){}
+}
+
+// ═══════════════════════════════════════════════════
+// DATABASE
+// ═══════════════════════════════════════════════════
+const DB = { users: [] };
+loadLS(); // load persisted users immediately
+
+function emptyData(){
+  return {
+    classi:[], alunni:[], programma:[], compiti:[],
+    appello:[], votiOrali:[], verifiche:[], note:[],
+    bacheca:[], eventi:[], orario:{}, lezioniPianificate:[]
+  };
+}
+
+// ═══════════════════════════════════════════════════
+// CURRENT SESSION
+// ═══════════════════════════════════════════════════
+let CUR  = null;   // current user object
+let CCLS = null;   // current class id
+let CTAB = 'giornale';
+
+function D(){ return CUR ? CUR.data : emptyData(); }
+
+// ═══════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════
+function doLogin(){
+  const u=gv('lu'), p=gv('lpw');
+  if(!u||!p){ errL('Inserisci nome utente e password.'); return; }
+  const usr = DB.users.find(x=>x.username===u && x.password===p);
+  if(!usr){ errL('Credenziali non valide. Non hai un account? Clicca Registrati.'); return; }
+  CUR = usr;
+  if(!CUR.data) CUR.data = emptyData();
+  if(!CUR.data.lezioniPianificate) CUR.data.lezioniPianificate=[];
+  launch();
+}
+
+function doReg(){
+  const n=gv('rn'), sc=gv('rs'), m=gv('rm'), u=gv('ru'), p=gv('rp');
+  if(!n||!sc||!m||!u||!p){ errL('Compila tutti i campi.'); return; }
+  if(p.length<6){ errL('La password deve avere almeno 6 caratteri.'); return; }
+  if(DB.users.find(x=>x.username===u)){ errL('Nome utente già in uso.'); return; }
+  const usr = { id:'u'+Date.now(), nome:n, scuola:sc, materia:m, username:u, password:p, data:emptyData() };
+  DB.users.push(usr);
+  saveLS();
+  CUR = usr;
+  launch();
+}
+
+function doLogout(){
+  saveLS();
+  CUR=null; CCLS=null; CTAB='giornale';
+  gi('APP').classList.add('hidden');
+  gi('LP').classList.remove('hidden');
+  gi('lu').value=''; gi('lpw').value='';
+  showLogin();
+}
+
+function errL(msg){ const e=gi('lerr'); e.textContent='⚠️ '+msg; e.classList.remove('hidden'); }
+function showLogin(){ gi('LF').classList.remove('hidden'); gi('RF').classList.add('hidden'); gi('lerr').classList.add('hidden'); }
+function showReg(){   gi('LF').classList.add('hidden'); gi('RF').classList.remove('hidden'); gi('lerr').classList.add('hidden'); }
+
+function launch(){
+  gi('LP').classList.add('hidden');
+  gi('APP').classList.remove('hidden');
+  gi('hNm').textContent = CUR.nome;
+  gi('hSc').textContent = CUR.scuola;
+  gi('hAv').textContent = CUR.nome.split(' ').map(x=>x[0]).slice(0,2).join('');
+  goto('home');
+}
+
+// ═══════════════════════════════════════════════════
+// ROUTER
+// ═══════════════════════════════════════════════════
+function goto(page){
+  document.querySelectorAll('.si').forEach(b=>b.classList.remove('act'));
+  const sb=gi('sb-'+page); if(sb) sb.classList.add('act');
+  gi('MC').innerHTML='';
+  const pages={home:pgHome,registro:pgReg,scrutini:pgSc,bacheca:pgBach,orario:pgOr,calendario:pgCal,classi:pgCls,strumenti:pgStr};
+  if(pages[page]) pages[page](gi('MC'));
+}
+function gotoClass(id){ CCLS=id; goto('registro'); }
+
+// ═══════════════════════════════════════════════════
+// VOTI SYSTEM
+// ═══════════════════════════════════════════════════
+const VRAW=[];
+for(let n=1;n<=10;n++){
+  if(n>1){ VRAW.push({l:(n-1)+'½',v:(n-1)+.5}); VRAW.push({l:(n-1)+'+',v:(n-1)+.25}); }
+  VRAW.push({l:''+n, v:n});
+  if(n<10) VRAW.push({l:n+'-', v:n-.25});
+}
+const seenV=new Set();
+const VOTI=VRAW.sort((a,b)=>a.v-b.v).filter(x=>{ if(x.v<1||seenV.has(x.v)) return false; seenV.add(x.v); return true; });
+
+function vL(val){
+  if(val===null||val===undefined||val==='') return '';
+  if(typeof val==='string'&&isNaN(+val)) return val;
+  const f=+val; if(isNaN(f)) return ''+val;
+  const x=VOTI.find(v=>Math.abs(v.v-f)<.01); return x?x.l:f.toFixed(2);
+}
+function vV(lbl){ if(!lbl) return null; const x=VOTI.find(v=>v.l===lbl); return x?x.v:null; }
+function gCls(val){
+  if(val===null||val===undefined||val==='') return 'ce';
+  if(typeof val==='string'&&isNaN(+val)) return 'cb';
+  const n=+val; if(isNaN(n)) return 'cb';
+  return n<5?'cr':n<6?'co':'cg';
+}
+function gHex(val){ const c=gCls(val); return c==='cr'?'#e74c3c':c==='co'?'#f5a623':c==='cg'?'#27ae60':c==='cb'?'#3498db':'#bdc3c7'; }
+function rndV(n){ return Math.round(n*4)/4; }
+function fmtM(n){ return (n===null||n===undefined)?'—':n.toFixed(2); }
+
+function calcM(items){
+  const ok=items.filter(x=>!x.ex&&x.p>0&&x.v!==null&&x.v!==undefined&&!isNaN(+x.v));
+  if(!ok.length) return null;
+  const sp=ok.reduce((s,x)=>s+x.p,0), sv=ok.reduce((s,x)=>s+(+x.v)*x.p,0);
+  return sp>0?sv/sp:null;
+}
+function filterVotiRow(aid, raw){
+  const sel=gi('vv_'+aid); if(!sel) return;
+  const n=parseInt(raw,10);
+  const cur=sel.value;
+  if(isNaN(n)||raw.trim()===''){
+    sel.innerHTML='<option value="">—</option><option value="Assente">Assente</option><option value="Esonero">Esonero</option>'+
+      VOTI.map(v=>`<option value="${v.l}"${v.l===cur?' selected':''}>${v.l}</option>`).join('');
+    return;
+  }
+  // Show exactly: n-, n, n+, n½  (values: n-0.25, n, n+0.25, n+0.5)
+  const variants=VOTI.filter(v=>Math.abs(v.v-(n-0.25))<0.01||Math.abs(v.v-n)<0.01||Math.abs(v.v-(n+0.25))<0.01||Math.abs(v.v-(n+0.5))<0.01);
+  sel.innerHTML='<option value="">—</option><option value="Assente">Assente</option><option value="Esonero">Esonero</option>'+
+    variants.map(v=>`<option value="${v.l}"${v.l===cur?' selected':''}>${v.l}</option>`).join('');
+  // auto-select exact match
+  const exact=variants.find(v=>Math.abs(v.v-n)<0.01); if(exact) sel.value=exact.l;
+}
+function vOpts(sel='',spec=false){
+  let o='<option value="">—</option>';
+  if(spec){ o+=`<option value="Assente"${sel==='Assente'?' selected':''}>Assente</option>`; o+=`<option value="Esonero"${sel==='Esonero'?' selected':''}>Esonero</option>`; }
+  VOTI.forEach(v=>{ o+=`<option value="${v.l}"${v.l===sel?' selected':''}>${v.l}</option>`; });
+  return o;
+}
+
+// ═══════════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════════
+function pgHome(c){
+  const d=D(), u=CUR;
+  const oggi=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+  if(!d.classi.length){
+    c.innerHTML=`
+    <div style="max-width:500px;margin:40px auto;background:#fff;border-radius:16px;padding:36px;box-shadow:var(--sh);text-align:center">
+      <div style="font-size:52px;margin-bottom:14px">🎉</div>
+      <h2 style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:var(--td);margin-bottom:8px">Benvenuto, ${u.nome.split(' ')[0]}!</h2>
+      <p style="color:var(--gy);font-size:13px;margin-bottom:24px">Inizia creando la tua prima classe, poi aggiungi gli alunni.</p>
+      <button class="btn bt" style="font-size:15px;padding:13px 28px" onclick="goto('classi')">➕ Crea la prima Classe</button>
+    </div>`;
+    return;
+  }
+  const unread=d.bacheca.filter(b=>!b.letto).length;
+  c.innerHTML=`
+  <div style="margin-bottom:18px">
+    <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;margin-bottom:3px">🏠 Bentornato, ${u.nome.split(' ')[0]}!</div>
+    <div style="color:var(--gy);font-size:13px;text-transform:capitalize">${oggi}</div>
+  </div>
+  <div class="g3" style="margin-bottom:20px">
+    <div class="sc"><div class="scn">${d.classi.length}</div><div class="scl">Classi</div></div>
+    <div class="sc or"><div class="scn">${unread}</div><div class="scl">Messaggi non letti</div></div>
+    <div class="sc gr"><div class="scn">${d.alunni.length}</div><div class="scl">Alunni totali</div></div>
+  </div>
+  <div class="g2">
+    <div>
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;margin-bottom:12px">👥 Le mie Classi</div>
+      ${d.classi.map(cl=>`<div class="hcc" onclick="gotoClass('${cl.id}')">
+        <h3>${cl.nome}</h3>
+        <div style="font-size:12px;color:var(--gy);margin-top:2px">${cl.materia}${cl.sede?' · '+cl.sede:''}</div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn bt bsm" onclick="event.stopPropagation();gotoClass('${cl.id}')">📋 Registro</button>
+          <button class="btn bo bsm" onclick="event.stopPropagation();CCLS='${cl.id}';CTAB='appello';goto('registro')">✅ Appello</button>
+          <button class="btn bo bsm" onclick="event.stopPropagation();CCLS='${cl.id}';CTAB='orali';goto('registro')">🗣️ Voti</button>
+        </div>
+      </div>`).join('')}
+      <button class="btn bo" style="width:100%;justify-content:center;margin-top:4px" onclick="goto('classi')">➕ Aggiungi Classe</button>
+    </div>
+    <div>
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;margin-bottom:12px">📌 Bacheca recente</div>
+      <div class="card" style="margin-bottom:16px">
+        ${d.bacheca.length===0?'<div style="padding:18px;color:var(--gy);font-size:13px;text-align:center">Nessun messaggio</div>':
+          d.bacheca.slice(0,4).map(b=>`<div style="padding:11px 15px;border-bottom:1px solid var(--gyl);cursor:pointer;display:flex;gap:10px" onclick="goto('bacheca')">
+            <div style="width:9px;height:9px;border-radius:50%;background:${b.letto?'var(--gym)':'var(--t)'};margin-top:5px;flex-shrink:0"></div>
+            <div><div style="font-weight:${b.letto?400:700};font-size:13px">${b.msg}</div>
+            <div style="font-size:11px;color:var(--gy);margin-top:2px">${b.data} · ${b.autore}</div></div>
+          </div>`).join('')}
+      </div>
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;margin-bottom:10px">⚡ Azioni Rapide</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="btn bo" style="justify-content:center" onclick="goto('classi')">👥 Classi</button>
+        <button class="btn bo" style="justify-content:center" onclick="goto('scrutini')">📊 Scrutini</button>
+        <button class="btn bo" style="justify-content:center" onclick="goto('orario')">🕐 Orario</button>
+        <button class="btn bo" style="justify-content:center" onclick="goto('calendario')">📅 Calendario</button>
+        <button class="btn bo" style="justify-content:center" onclick="goto('bacheca')">📌 Bacheca</button>
+        <button class="btn bo" style="justify-content:center" onclick="goto('strumenti')">⚙️ Strumenti</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════
+// REGISTRO
+// ═══════════════════════════════════════════════════
+function pgReg(c){
+  const d=D();
+  if(!d.classi.length){ c.innerHTML=`<div class="empty"><div class="ei">📋</div><h3>Nessuna classe</h3><p>Crea prima una classe.</p><button class="btn bt" onclick="goto('classi')">➕ Vai a Classi</button></div>`; return; }
+  if(!CCLS||!d.classi.find(x=>x.id===CCLS)) CCLS=d.classi[0].id;
+  const cls=d.classi.find(x=>x.id===CCLS);
+  c.innerHTML=`
+  <div class="cbar">
+    <div><div class="cnm">${cls.nome} — ${cls.materia}</div><div style="font-size:12px;color:var(--gy)">${new Date().toLocaleDateString('it-IT')}</div></div>
+    <select style="padding:6px 10px;border-radius:8px;border:2px solid var(--t);font-weight:700;font-size:12px;color:var(--t);outline:none" onchange="CCLS=this.value;pgReg(gi('MC'))">
+      ${d.classi.map(cl=>`<option value="${cl.id}"${cl.id===CCLS?' selected':''}>${cl.nome}</option>`).join('')}
+    </select>
+    <div class="ctabs">
+      <button class="ct${CTAB==='giornale'?' act':''}" onclick="CTAB='giornale';pgReg(gi('MC'))"><span class="ci">📋</span>GIORNALE</button>
+      <button class="ct${CTAB==='appello'?' act':''}" onclick="CTAB='appello';pgReg(gi('MC'))"><span class="ci">✅</span>APPELLO</button>
+      <button class="ct${CTAB==='programma'?' act':''}" onclick="CTAB='programma';pgReg(gi('MC'))"><span class="ci">📚</span>DIDATTICA</button>
+      <button class="ct${CTAB==='orali'?' act':''}" onclick="CTAB='orali';pgReg(gi('MC'))"><span class="ci">🗣️</span>ORALI</button>
+      <button class="ct${CTAB==='scritte'?' act':''}" onclick="CTAB='scritte';pgReg(gi('MC'))"><span class="ci">✍️</span>SCRITTE</button>
+      <button class="ct${CTAB==='pratico'?' act':''}" onclick="CTAB='pratico';pgReg(gi('MC'))"><span class="ci">🛠️</span>PRATICO</button>
+      <button class="ct${CTAB==='note'?' act':''}" onclick="CTAB='note';pgReg(gi('MC'))"><span class="ci">📝</span>NOTE</button>
+    </div>
+  </div>
+  <div id="TC"></div>`;
+  renderTab(cls);
+}
+function renderTab(cls){
+  const tc=gi('TC'); if(!tc) return;
+  const tabs={giornale:tabGio,appello:tabApp,programma:tabPro,orali:tabOra,scritte:tabScr,pratico:tabPra,note:tabNot};
+  if(tabs[CTAB]) tabs[CTAB](tc,cls);
+}
+
+// ─── GIORNALE ───
+function tabGio(c,cls){
+  const d=D();
+  const lez=d.programma.filter(p=>p.classeId===cls.id).sort((a,b)=>dSrt(b.data,a.data));
+  const cmp=d.compiti.filter(x=>x.classeId===cls.id);
+  c.innerHTML=`
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="btn bt" onclick="openM('addLez','${cls.id}')">✏️ Firma Lezione</button>
+    <button class="btn bo" onclick="openM('addLezMulti','${cls.id}')">📋 Firma Più Ore</button>
+    <button class="btn bo" onclick="openM('addCmp','${cls.id}')">📚 Assegna Compito</button>
+    <button class="btn bor bsm" onclick="openM('supplenza','${cls.id}')">🔄 Supplenza</button>
+  </div>
+  ${lez.length===0?`<div class="empty"><div class="ei">📝</div><h3>Nessuna lezione</h3><p>Clicca "Firma Lezione" per iniziare.</p></div>`:`
+  <div class="card" style="margin-bottom:14px;overflow-x:auto">
+    <table class="tbl">
+      <thead><tr><th>DATA</th><th>ORA</th><th>DOCENTE</th><th>MATERIA</th><th>ARGOMENTO</th><th>COMPITI</th><th>NOTE</th><th></th></tr></thead>
+      <tbody>${lez.map(l=>{
+        const cm=cmp.find(x=>x.lId===l.id);
+        const isSuppl=l.isSupplenza;
+        return `<tr style="${isSuppl?'background:#fffbf0':''}">
+          <td style="font-weight:700;white-space:nowrap">${l.data}</td>
+          <td style="text-align:center;font-weight:700;color:var(--t)">${l.ora||'—'}</td>
+          <td style="font-size:12px;font-weight:700">${isSuppl?'🔄 SUPPL.<br><span style="font-size:10px;color:var(--gy)">'+l.supplenzaDi+'</span>':CUR.nome.split(' ').slice(0,2).map((x,i)=>i===0?x:x[0]+'.').join(' ')}</td>
+          <td style="color:var(--t);font-weight:700;font-size:12px">${l.materia||cls.materia}</td>
+          <td>${l.arg}</td>
+          <td style="font-size:12px">
+            ${cm?`<span style="color:var(--gr);font-size:10px;font-weight:700">📚 Entro ${cm.perIl}:</span><br>${cm.testo.substring(0,50)}${cm.testo.length>50?'…':''}`:
+              `<button class="btn bsm" style="background:var(--grb);color:var(--gr);border:none" onclick="openM('addCmpOnLez','${cls.id}','${l.id}')">+ Compito</button>`}
+          </td>
+          <td style="font-size:12px;color:var(--gy);max-width:100px">${l.nota||''}</td>
+          <td style="white-space:nowrap">
+            <button class="btn bo bsm" onclick="openM('editLez','${cls.id}','${l.id}')">✏️</button>
+            <button class="btn br bsm" style="margin-left:3px" onclick="delLez('${l.id}','${cls.id}')">🗑️</button>
+          </td>
+        </tr>`;}).join('')}
+      </tbody>
+    </table>
+  </div>`}
+  <div style="background:var(--gr);color:#fff;border-radius:10px;padding:12px 18px;font-weight:700;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center" onclick="togEl('cmpPan')">
+    <span>📚 Compiti assegnati <span style="background:#fff;color:var(--gr);border-radius:10px;padding:1px 10px;font-size:12px;margin-left:8px">${cmp.length}</span></span><span>▼</span>
+  </div>
+  <div id="cmpPan" class="hidden" style="background:#fff;border-radius:0 0 10px 10px;box-shadow:var(--sh);padding:14px">
+    ${cmp.length===0?`<p style="color:var(--gy);font-size:13px">Nessun compito.</p>`:
+      cmp.map(x=>`<div style="padding:8px 0;border-bottom:1px solid var(--gyl);font-size:13px;display:flex;justify-content:space-between;align-items:center">
+        <span><b>Per il ${x.perIl}:</b> ${x.testo}</span>
+        <button class="btn br bsm" onclick="delCmp('${x.id}','${cls.id}')">🗑️</button>
+      </div>`).join('')}
+  </div>`;
+}
+
+// ─── APPELLO ───
+function tabApp(c,cls){
+  const d=D();
+  const alunni=d.alunni.filter(a=>a.classeId===cls.id).sort((a,b)=>a.n-b.n);
+  if(!alunni.length){ c.innerHTML=`<div class="empty"><div class="ei">👨‍🎓</div><h3>Nessun alunno</h3><p>Aggiungi alunni alla classe.</p><button class="btn bt" onclick="openM('addAl','${cls.id}')">➕ Aggiungi Alunni</button></div>`; return; }
+  const oggi=new Date().toLocaleDateString('it-IT');
+  alunni.forEach(a=>{ if(!d.appello.find(x=>x.aid===a.id&&x.data===oggi&&x.cid===cls.id)) d.appello.push({id:'ap'+a.id+oggi.replace(/\//g,''),aid:a.id,cid:cls.id,data:oggi,stato:'P',note:'',ingresso:'',uscita:'',fuoriClasse:'',giustificato:false,motivazione:''}); });
+  const aps=d.appello.filter(x=>x.cid===cls.id&&x.data===oggi);
+  const P=aps.filter(x=>x.stato==='P').length, A=aps.filter(x=>x.stato==='A').length, R=aps.filter(x=>x.stato==='R').length;
+  c.innerHTML=`
+  <div class="info">✅ <b>Appello</b> — Clicca sullo stato per cambiarlo · P=Presente A=Assente R=Ritardo U=Uscita F=Fuori classe · Usa i pulsanti per ingresso/uscita/fuori classe</div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
+    <span style="font-weight:700;font-size:13px;color:var(--gy)">📅 ${oggi}</span>
+    <span style="background:var(--grb);color:var(--gr);border-radius:8px;padding:5px 12px;font-size:13px;font-weight:700">✅ ${P}</span>
+    <span style="background:var(--reb);color:var(--re);border-radius:8px;padding:5px 12px;font-size:13px;font-weight:700">❌ ${A}</span>
+    ${R>0?`<span style="background:var(--orb);color:var(--or);border-radius:8px;padding:5px 12px;font-size:13px;font-weight:700">⏰ ${R}</span>`:''}
+    <button class="btn bor bsm" style="margin-left:auto" onclick="openM('evMulti','${cls.id}','${oggi}')">➕ Evento Multiplo</button>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <table class="tbl">
+      <thead><tr><th>N°</th><th>ALUNNO</th><th style="text-align:center">STATO</th><th style="text-align:center">INGRESSO</th><th style="text-align:center">USCITA</th><th style="text-align:center">FUORI CL.</th><th style="text-align:center">GIUST.</th><th>TOT.A</th><th>TOT.R</th><th></th></tr></thead>
+      <tbody>${alunni.map(a=>{
+        const ap=aps.find(x=>x.aid===a.id)||{stato:'P',ingresso:'',uscita:'',fuoriClasse:'',giustificato:false};
+        const st=d.appello.filter(x=>x.aid===a.id&&x.cid===cls.id);
+        const daGiust=st.filter(x=>x.stato!=='P'&&!x.giustificato);
+        const giust=st.filter(x=>x.stato!=='P'&&x.giustificato);
+        return `<tr>
+          <td style="color:var(--gy);font-weight:700;text-align:center">${a.n}</td>
+          <td style="font-weight:700;cursor:pointer;color:var(--td)" onclick="openM('profilo','${cls.id}','${a.id}')">${a.nome}</td>
+          <td style="text-align:center"><button class="ab ${ap.stato}" onclick="cycleStato('${a.id}','${cls.id}','${oggi}')">${ap.stato}</button></td>
+          <td style="text-align:center">
+            ${ap.ingresso
+              ? `<span style="color:var(--bl);font-size:11px;font-weight:700;cursor:pointer" onclick="openM('setOra','${cls.id}','${a.id}','ing','${oggi}')">🔵 ${ap.ingresso}</span>`
+              : `<button class="btn bsm" style="background:var(--blb);color:var(--bl);border:none;font-size:10px" onclick="openM('setOra','${cls.id}','${a.id}','ing','${oggi}')">+ Ing.</button>`}
+          </td>
+          <td style="text-align:center">
+            ${ap.uscita
+              ? `<span style="color:var(--or);font-size:11px;font-weight:700;cursor:pointer" onclick="openM('setOra','${cls.id}','${a.id}','usc','${oggi}')">🟠 ${ap.uscita}</span>`
+              : `<button class="btn bsm" style="background:var(--orb);color:var(--or);border:none;font-size:10px" onclick="openM('setOra','${cls.id}','${a.id}','usc','${oggi}')">+ Usc.</button>`}
+          </td>
+          <td style="text-align:center">
+            ${ap.fuoriClasse
+              ? `<span style="color:var(--gy);font-size:11px;font-weight:700;cursor:pointer" onclick="openM('setOra','${cls.id}','${a.id}','fc','${oggi}')">🚶 ${ap.fuoriClasse}</span>`
+              : `<button class="btn bsm" style="background:var(--gyl);color:var(--gy);border:none;font-size:10px" onclick="openM('setOra','${cls.id}','${a.id}','fc','${oggi}')">+ FC</button>`}
+          </td>
+          <td style="text-align:center">
+            ${daGiust.length>0
+              ? `<button class="btn bsm" style="background:var(--reb);color:var(--re);border:none;font-weight:700;font-size:10px" onclick="openM('giust','${cls.id}','${a.id}')">⚠️ ${daGiust.length}</button>`
+              : giust.length>0
+                ? `<span style="color:var(--gr);font-size:11px;font-weight:700">✓${giust.length}</span>`
+                : `<span style="color:var(--gym)">—</span>`}
+          </td>
+          <td style="text-align:center;font-weight:700;color:var(--re)">${st.filter(x=>x.stato==='A').length}</td>
+          <td style="text-align:center;font-weight:700;color:var(--or)">${st.filter(x=>x.stato==='R').length}</td>
+          <td style="white-space:nowrap">
+            <button class="btn bo bsm" onclick="openM('profilo','${cls.id}','${a.id}')">👤</button>
+            <button class="btn bsm" style="background:var(--tl);color:var(--t);border:none;margin-left:2px" onclick="openM('giust','${cls.id}','${a.id}')">📋</button>
+          </td>
+        </tr>`;}).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+function cycleStato(aid,cid,data){
+  const d=D();
+  const ap=d.appello.find(x=>x.aid===aid&&x.cid===cid&&x.data===data);
+  if(ap){ const cy=['P','A','R','U','F']; ap.stato=cy[(cy.indexOf(ap.stato)+1)%cy.length]; }
+  renderTab(d.classi.find(x=>x.id===cid));
+}
+
+// ─── DIDATTICA ───
+function tabPro(c,cls){
+  const d=D();
+  const prog=d.programma.filter(p=>p.classeId===cls.id).sort((a,b)=>dSrt(b.data,a.data));
+  c.innerHTML=`
+  <div style="display:flex;gap:8px;margin-bottom:14px">
+    <button class="btn bt" onclick="openM('addLez','${cls.id}')">➕ Aggiungi Argomento</button>
+  </div>
+  ${prog.length===0?`<div class="empty"><div class="ei">📚</div><h3>Nessun argomento</h3><p>Registra gli argomenti svolti.</p></div>`:`
+  <div class="card"><table class="tbl">
+    <thead><tr><th>DATA</th><th>ORA</th><th>MATERIA</th><th>ARGOMENTO</th><th>NOTE DIDATTICHE</th><th></th></tr></thead>
+    <tbody>${prog.map(p=>`<tr>
+      <td style="font-weight:700;white-space:nowrap">${p.data}</td>
+      <td style="text-align:center;font-weight:700;color:var(--t)">${p.ora||'—'}</td>
+      <td style="color:var(--t);font-weight:700;font-size:12px">${p.materia||cls.materia}</td>
+      <td style="font-weight:700">${p.arg}</td>
+      <td style="font-size:12px;color:var(--gy)">${p.nota||'—'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn bo bsm" onclick="openM('editLez','${cls.id}','${p.id}')">✏️</button>
+        <button class="btn br bsm" style="margin-left:3px" onclick="delLez('${p.id}','${cls.id}')">🗑️</button>
+      </td>
+    </tr>`).join('')}</tbody>
+  </table></div>`}`;
+}
+
+// ─── ORALI ───
+function tabOra(c,cls){
+  const d=D();
+  const alunni=d.alunni.filter(a=>a.classeId===cls.id).sort((a,b)=>a.n-b.n);
+  if(!alunni.length){ c.innerHTML=`<div class="empty"><div class="ei">🗣️</div><h3>Nessun alunno</h3><button class="btn bt" onclick="openM('addAl','${cls.id}')">➕ Alunni</button></div>`; return; }
+  const vc=d.votiOrali.filter(v=>v.classeId===cls.id&&!v.meta);
+  const sm={};
+  d.votiOrali.filter(v=>v.classeId===cls.id).forEach(v=>{ if(!sm[v.sId]) sm[v.sId]={id:v.sId,data:v.data,et:v.et}; });
+  const sess=Object.values(sm).sort((a,b)=>dSrt(a.data,b.data));
+  const cw=sess.length===0?0:sess.length<=3?90:sess.length<=5?76:sess.length<=7?64:sess.length<=8?56:sess.length<=12?44:38;
+  const maxO=cls.maxOra||0;
+  const atLimitO=maxO>0&&sess.length>=maxO;
+  c.innerHTML=`
+  <div class="info">🗣️ Premi <b>+</b> accanto a un alunno per un voto singolo. Oppure crea una sessione per tutti. <span style="color:var(--bl)">■ Azzurro = escluso dalla media</span></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
+    <button class="btn bt" onclick="openM('addSessOrale','${cls.id}')">📋 Crea Sessione</button>
+    <button class="btn bo" onclick="openM('addSessOraleMensile','${cls.id}')">📅 Sessione Mensile</button>
+    ${atLimitO?`<span style="background:var(--reb);color:var(--re);border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">⚠️ Limite ${maxO} sessioni raggiunto</span>`:''}
+    <span style="font-size:12px;color:var(--gy);margin-left:auto">${sess.length}${maxO?'/'+maxO:''} sessioni</span>
+  </div>
+  <div class="tscr"><table class="tbl" style="min-width:${360+sess.length*cw}px">
+    <thead><tr>
+      <th style="min-width:160px;position:sticky;left:0;z-index:2">ALUNNO</th>
+      <th style="min-width:70px">MEDIA</th>
+      <th style="min-width:40px">VOTI</th>
+      <th style="min-width:44px;text-align:center">+</th>
+      ${sess.map(s=>`<th style="min-width:${cw}px;text-align:center;cursor:pointer;padding:6px 3px" onclick="openM('editSessOrale','${cls.id}','${s.id}')">
+        <div style="font-size:10px;font-weight:800">${s.et||'Ses.'}</div>
+        <div style="font-size:9px;font-weight:400;opacity:.85">${s.data}</div>
+        ${s.materia&&s.materia!==cls.materia?`<div style="font-size:9px;color:var(--bl);font-weight:700;opacity:.9">${s.materia}</div>`:''}
+        <div style="font-size:9px;opacity:.5">✏️</div>
+      </th>`).join('')}
+    </tr></thead>
+    <tbody>${alunni.map(a=>{
+      const av=vc.filter(v=>v.aid===a.id);
+      const media=calcM(av.map(v=>({v:v.val,p:1,ex:v.ex})));
+      return `<tr>
+        <td style="font-weight:700;cursor:pointer;color:var(--td);position:sticky;left:0;background:#fff" onclick="openM('profilo','${cls.id}','${a.id}')">${a.n}. ${a.nome}</td>
+        <td style="text-align:center;font-weight:900;font-size:14px">${fmtM(media)}</td>
+        <td style="text-align:center;font-weight:900;color:var(--gy)">${av.filter(v=>!v.ex).length}</td>
+        <td style="text-align:center;padding:4px">
+          <button style="width:30px;height:30px;border-radius:50%;border:2px solid var(--t);background:var(--tl);color:var(--t);font-size:18px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center" onclick="openM('addVotoOrale','${cls.id}','${a.id}')">+</button>
+        </td>
+        ${sess.map(s=>{
+          const vt=av.find(v=>v.sId===s.id);
+          if(!vt) return `<td style="padding:2px"><div class="ve" onclick="openM('editVotoOrale','${cls.id}','${s.id}','${a.id}')"><span style="color:var(--gym);font-size:16px">+</span></div></td>`;
+          const bg=vt.ex?'#3498db':gHex(vt.val);
+          return `<td style="padding:2px"><div class="vc" style="background:${bg}" onclick="openM('editVotoOrale','${cls.id}','${s.id}','${a.id}')">
+            <span class="vcN">${vL(vt.val)}</span>${vt.ex?'<span class="vcS">escl.</span>':''}
+          </div></td>`;
+        }).join('')}
+      </tr>`;}).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+// ─── SCRITTE ───
+function tabScr(c,cls){
+  const d=D();
+  const alunni=d.alunni.filter(a=>a.classeId===cls.id).sort((a,b)=>a.n-b.n);
+  if(!alunni.length){ c.innerHTML=`<div class="empty"><div class="ei">✍️</div><h3>Nessun alunno</h3><button class="btn bt" onclick="openM('addAl','${cls.id}')">➕ Alunni</button></div>`; return; }
+  const ver=d.verifiche.filter(v=>v.classeId===cls.id&&v.tipo!=='Pratico').sort((a,b)=>dSrt(a.data,b.data));
+  const maxP=cls.maxProve||0;
+  const atLimit=maxP>0&&ver.length>=maxP;
+  const cw=ver.length===0?0:ver.length<=3?110:ver.length<=5?90:ver.length<=7?74:ver.length<=8?63:ver.length<=12?50:42;
+  c.innerHTML=`
+  <div class="info">✍️ Clicca <b>Aggiungi Prova</b> per creare una verifica. Poi clicca sull'intestazione per inserire i voti. <span style="color:var(--bl)">■ Azzurro = escluso o peso 0</span></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
+    <button class="btn bt" onclick="openM('addVerifica','${cls.id}')">➕ Aggiungi Prova</button>
+    ${atLimit?`<span style="background:var(--reb);color:var(--re);border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">⚠️ Limite ${maxP} prove raggiunto</span>`:''}
+    <span style="font-size:12px;color:var(--gy);margin-left:auto">${ver.length}${maxP?'/'+maxP:''} prove</span>
+  </div>
+  ${ver.length===0?`<div class="empty"><div class="ei">✍️</div><h3>Nessuna prova</h3><p>Aggiungi una prova per iniziare.</p></div>`:`
+  <div class="tscr"><table class="tbl" style="min-width:${280+ver.length*cw}px">
+    <thead><tr>
+      <th style="min-width:160px;position:sticky;left:0;z-index:2">ALUNNO</th>
+      <th style="min-width:70px">MEDIA</th>
+      ${ver.map(v=>`<th style="min-width:${cw}px;text-align:center;cursor:pointer;padding:6px 3px" onclick="openM('editVerifica','${cls.id}','${v.id}')">
+        <div style="font-size:10px;font-weight:800">${v.et||'Ver.'}</div>
+        <div style="font-size:9px;font-weight:400;opacity:.85">${v.data}</div>
+        <div style="font-size:9px;opacity:.7">${v.tipo.charAt(0)} · p.${v.peso}%</div>
+        ${v.materia&&v.materia!==cls.materia?`<div style="font-size:9px;color:var(--bl);font-weight:700;opacity:.9">${v.materia}</div>`:''}
+        <div style="font-size:9px;opacity:.5">✏️</div>
+      </th>`).join('')}
+    </tr></thead>
+    <tbody>${alunni.map(a=>{
+      const vIt=ver.map(v=>{ const e=(v.voti||{})[a.id]; return e&&e.val!==undefined&&e.val!==null?{v:e.val,p:e.ex?0:v.peso,ex:e.ex}:null; }).filter(Boolean);
+      const media=calcM(vIt);
+      return `<tr>
+        <td style="font-weight:700;cursor:pointer;color:var(--td);position:sticky;left:0;background:#fff" onclick="openM('profilo','${cls.id}','${a.id}')">${a.n}. ${a.nome}</td>
+        <td style="text-align:center;font-weight:900;font-size:14px">${fmtM(media)}</td>
+        ${ver.map(v=>{
+          const e=(v.voti||{})[a.id];
+          if(!e||e.val===undefined||e.val===null) return `<td style="padding:2px"><div class="ve" onclick="openM('insVotiVer','${cls.id}','${v.id}')"><span style="color:var(--gym);font-size:16px">+</span></div></td>`;
+          const isStr=typeof e.val==='string'&&isNaN(+e.val);
+          const blu=e.ex||v.peso===0||isStr;
+          return `<td style="padding:2px"><div class="vc" style="background:${blu?'#3498db':gHex(e.val)}" onclick="openM('insVotiVer','${cls.id}','${v.id}')">
+            <span class="vcN">${isStr?e.val:vL(e.val)}</span>${e.ex?'<span class="vcS">escl.</span>':v.peso===0?'<span class="vcS">p.0</span>':''}
+          </div></td>`;
+        }).join('')}
+      </tr>`;}).join('')}
+    </tbody>
+  </table></div>`}`;
+}
+
+// ─── PRATICO ───
+function tabPra(c,cls){
+  const d=D();
+  const alunni=d.alunni.filter(a=>a.classeId===cls.id).sort((a,b)=>a.n-b.n);
+  if(!alunni.length){ c.innerHTML=`<div class="empty"><div class="ei">🛠️</div><h3>Nessun alunno</h3><button class="btn bt" onclick="openM('addAl','${cls.id}')">➕ Alunni</button></div>`; return; }
+  const ver=d.verifiche.filter(v=>v.classeId===cls.id&&v.tipo==='Pratico').sort((a,b)=>dSrt(a.data,b.data));
+  const maxP=cls.maxProve||0;
+  const atLimit=maxP>0&&ver.length>=maxP;
+  const cw=ver.length===0?0:ver.length<=3?110:ver.length<=5?90:ver.length<=7?74:ver.length<=8?63:ver.length<=12?50:42;
+  c.innerHTML=`
+  <div class="info">🛠️ Prove pratiche — separate dalle scritte. Clicca sull'intestazione per inserire i voti. <span style="color:var(--bl)">■ Azzurro = escluso o peso 0</span></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
+    <button class="btn bt" onclick="openM('addVerificaPra','${cls.id}')">➕ Aggiungi Prova Pratica</button>
+    ${atLimit?`<span style="background:var(--reb);color:var(--re);border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">⚠️ Limite ${maxP} prove raggiunto</span>`:''}
+    <span style="font-size:12px;color:var(--gy);margin-left:auto">${ver.length}${maxP?'/'+maxP:''} prove pratiche</span>
+  </div>
+  ${ver.length===0?`<div class="empty"><div class="ei">🛠️</div><h3>Nessuna prova pratica</h3><p>Aggiungi una prova pratica per iniziare.</p></div>`:`
+  <div class="tscr"><table class="tbl" style="min-width:${280+ver.length*cw}px">
+    <thead><tr>
+      <th style="min-width:160px;position:sticky;left:0;z-index:2">ALUNNO</th>
+      <th style="min-width:70px">MEDIA</th>
+      ${ver.map(v=>`<th style="min-width:${cw}px;text-align:center;cursor:pointer;padding:6px 3px" onclick="openM('editVerifica','${cls.id}','${v.id}')">
+        <div style="font-size:10px;font-weight:800">${v.et||'Pra.'}</div>
+        <div style="font-size:9px;font-weight:400;opacity:.85">${v.data}</div>
+        <div style="font-size:9px;opacity:.7">p.${v.peso}%</div>
+        ${v.materia&&v.materia!==cls.materia?`<div style="font-size:9px;color:var(--or);font-weight:700;opacity:.9">${v.materia}</div>`:''}
+        <div style="font-size:9px;opacity:.5">✏️</div>
+      </th>`).join('')}
+    </tr></thead>
+    <tbody>${alunni.map(a=>{
+      const vIt=ver.map(v=>{ const e=(v.voti||{})[a.id]; return e&&e.val!==undefined&&e.val!==null?{v:e.val,p:e.ex?0:v.peso,ex:e.ex}:null; }).filter(Boolean);
+      const media=calcM(vIt);
+      return `<tr>
+        <td style="font-weight:700;cursor:pointer;color:var(--td);position:sticky;left:0;background:#fff" onclick="openM('profilo','${cls.id}','${a.id}')">${a.n}. ${a.nome}</td>
+        <td style="text-align:center;font-weight:900;font-size:14px">${fmtM(media)}</td>
+        ${ver.map(v=>{
+          const e=(v.voti||{})[a.id];
+          if(!e||e.val===undefined||e.val===null) return `<td style="padding:2px"><div class="ve" onclick="openM('insVotiVer','${cls.id}','${v.id}')"><span style="color:var(--gym);font-size:16px">+</span></div></td>`;
+          const isStr=typeof e.val==='string'&&isNaN(+e.val);
+          const blu=e.ex||v.peso===0||isStr;
+          return `<td style="padding:2px"><div class="vc" style="background:${blu?'#3498db':gHex(e.val)}" onclick="openM('insVotiVer','${cls.id}','${v.id}')">
+            <span class="vcN">${isStr?e.val:vL(e.val)}</span>${e.ex?'<span class="vcS">escl.</span>':v.peso===0?'<span class="vcS">p.0</span>':''}
+          </div></td>`;
+        }).join('')}
+      </tr>`;}).join('')}
+    </tbody>
+  </table></div>`}`;
+}
+
+// ─── NOTE ───
+function tabNot(c,cls){
+  const d=D();
+  const noteAll=d.note.filter(n=>n.cid===cls.id).sort((a,b)=>dSrt(b.data,a.data));
+  const noteGen=noteAll.filter(n=>!n.aid);
+  const noteAlunni=noteAll.filter(n=>!!n.aid);
+  const alunni=d.alunni.filter(a=>a.classeId===cls.id).sort((a,b)=>a.n-b.n);
+  c.innerHTML=`
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="btn bt" onclick="openM('addNota','${cls.id}')">📝 Nota Singolo Alunno</button>
+    <button class="btn bo" onclick="openM('addNotaGen','${cls.id}')">📢 Nota Generale Classe</button>
+  </div>
+  <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;margin-bottom:8px;color:var(--td)">📢 Note Generali (tutta la classe)</div>
+  ${noteGen.length===0?`<div style="background:var(--tl);border-radius:8px;padding:12px;font-size:13px;color:var(--gy);margin-bottom:16px">Nessuna nota generale.</div>`:`
+  <div class="card" style="margin-bottom:16px"><table class="tbl">
+    <thead><tr><th>DATA</th><th>TIPO</th><th>NOTA</th><th></th></tr></thead>
+    <tbody>${noteGen.map(n=>`<tr>
+      <td style="font-weight:700;white-space:nowrap">${n.data}</td>
+      <td><span style="background:var(--blb);color:var(--bl);border-radius:5px;padding:2px 8px;font-size:11px;font-weight:700">${n.tipo}</span></td>
+      <td>${n.testo}</td>
+      <td><button class="btn br bsm" onclick="delNota('${n.id}','${cls.id}')">🗑️</button></td>
+    </tr>`).join('')}</tbody>
+  </table></div>`}
+  <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;margin-bottom:8px;color:var(--td)">📝 Note Singoli Alunni</div>
+  ${noteAlunni.length===0?`<div class="empty" style="padding:20px"><div class="ei" style="font-size:30px">📝</div><h3>Nessuna nota</h3><p>Nessuna nota disciplinare.</p></div>`:`
+  <div class="card"><table class="tbl">
+    <thead><tr><th>DATA</th><th>ALUNNO</th><th>TIPO</th><th>NOTA</th><th></th></tr></thead>
+    <tbody>${noteAlunni.map(n=>{ const al=alunni.find(a=>a.id===n.aid); return `<tr>
+      <td style="font-weight:700;white-space:nowrap">${n.data}</td>
+      <td style="font-weight:700">${al?.nome||'—'}</td>
+      <td><span style="background:var(--orb);color:var(--or);border-radius:5px;padding:2px 8px;font-size:11px;font-weight:700">${n.tipo}</span></td>
+      <td>${n.testo}</td>
+      <td><button class="btn br bsm" onclick="delNota('${n.id}','${cls.id}')">🗑️</button></td>
+    </tr>`; }).join('')}</tbody>
+  </table></div>`}`;
+}
+
+// ═══════════════════════════════════════════════════
+// SCRUTINI
+// ═══════════════════════════════════════════════════
+function pgSc(c){
+  const d=D();
+  if(!d.classi.length){ c.innerHTML=`<div class="empty"><div class="ei">📊</div><h3>Nessuna classe</h3><button class="btn bt" onclick="goto('classi')">➕ Crea Classe</button></div>`; return; }
+  c.innerHTML=`<div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;margin-bottom:18px">📊 Scrutini</div>
+  <div class="g2">${d.classi.map(cls=>`<div class="card">
+    <div class="chdr">${cls.nome} · ${cls.materia}</div>
+    <div style="padding:16px"><p style="font-size:13px;color:var(--gy);margin-bottom:12px">${d.alunni.filter(a=>a.classeId===cls.id).length} alunni</p>
+    <button class="btn bt" onclick="openM('scrutinio','${cls.id}')">📋 Apri</button></div>
+  </div>`).join('')}</div>`;
+}
+
+// ═══════════════════════════════════════════════════
+// BACHECA
+// ═══════════════════════════════════════════════════
+function pgBach(c){
+  const d=D();
+  c.innerHTML=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px">📌 Bacheca</div>
+    <button class="btn bt" onclick="openM('addMsg')">➕ Nuovo Messaggio</button>
+  </div>
+  ${d.bacheca.length===0?`<div class="empty"><div class="ei">📌</div><h3>Bacheca vuota</h3><p>Pubblica messaggi e circolari.</p><button class="btn bt" onclick="openM('addMsg')">➕ Pubblica</button></div>`:`
+  <div class="card"><table class="tbl">
+    <thead><tr><th>DATA</th><th>CAT.</th><th>N.DOC</th><th>MESSAGGIO</th><th>AUTORE</th><th>STATO</th><th></th></tr></thead>
+    <tbody>${d.bacheca.map(b=>`<tr>
+      <td style="font-weight:700;white-space:nowrap">${b.data}</td>
+      <td><span style="background:var(--gyl);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">${b.cat}</span></td>
+      <td style="font-weight:700">${b.num||'—'}</td>
+      <td style="font-weight:${b.letto?400:700}">${b.msg}</td>
+      <td style="font-size:12px">${b.autore}</td>
+      <td>${b.letto?'<span style="color:var(--gr);font-size:12px;font-weight:700">✓</span>':'<span style="color:var(--or);font-size:12px;font-weight:700">●</span>'}</td>
+      <td style="white-space:nowrap">
+        ${!b.letto?`<button class="btn bo bsm" onclick="marcaLetto('${b.id}')">✓</button>`:''}
+        <button class="btn br bsm" style="margin-left:4px" onclick="delBach('${b.id}')">🗑️</button>
+      </td>
+    </tr>`).join('')}</tbody>
+  </table></div>`}`;
+}
+function marcaLetto(id){ const b=D().bacheca.find(x=>x.id===id); if(b){b.letto=true;pgBach(gi('MC'));toast('Letto ✓');} }
+function delBach(id){ CUR.data.bacheca=D().bacheca.filter(x=>x.id!==id); pgBach(gi('MC')); toast('Eliminato'); }
+
+// ═══════════════════════════════════════════════════
+// ORARIO
+// ═══════════════════════════════════════════════════
+function pgOr(c){
+  const d=D();
+  if(!d.classi.length){ c.innerHTML=`<div class="empty"><div class="ei">🕐</div><h3>Nessuna classe</h3><button class="btn bt" onclick="goto('classi')">➕ Crea Classe</button></div>`; return; }
+  if(!CCLS||!d.classi.find(x=>x.id===CCLS)) CCLS=d.classi[0].id;
+  const cls=d.classi.find(x=>x.id===CCLS);
+  const or=d.orario[cls.id]||{};
+  const days=['LUN','MAR','MER','GIO','VEN','SAB'], ore=['1ª','2ª','3ª','4ª','5ª','6ª'];
+  const todayI=new Date().getDay()-1;
+  // Next week dates for display
+  const oggi=new Date();
+  const lunPross=new Date(oggi);
+  const dow=oggi.getDay(); // 0=dom,1=lun...
+  const daysToNextMon=(dow===0)?1:(8-dow);
+  lunPross.setDate(oggi.getDate()+daysToNextMon);
+  const nextWeekDates=days.map((_,i)=>{
+    const d2=new Date(lunPross); d2.setDate(lunPross.getDate()+i);
+    return d2;
+  });
+  const fmt=dt=>dt.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'});
+  // Planned lessons for this class
+  if(!d.lezioniPianificate) CUR.data.lezioniPianificate=[];
+  const pianificate=d.lezioniPianificate.filter(l=>l.classeId===cls.id);
+  c.innerHTML=`
+  <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;flex-wrap:wrap">
+    <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px">🕐 Orario — ${cls.nome}</div>
+    <select style="padding:6px 10px;border-radius:8px;border:2px solid var(--t);font-weight:700;font-size:12px;color:var(--t);outline:none;margin-left:auto" onchange="CCLS=this.value;pgOr(gi('MC'))">
+      ${d.classi.map(cl=>`<option value="${cl.id}"${cl.id===CCLS?' selected':''}>${cl.nome}</option>`).join('')}
+    </select>
+  </div>
+  <div class="info">Clicca su una cella per modificare la materia. Usa <b>Genera Settimana</b> per pianificare le lezioni della prossima settimana (${fmt(nextWeekDates[0])} – ${fmt(nextWeekDates[4])}).</div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="btn bt" onclick="openM('genSettimanaPross','${cls.id}')">📅 Genera Settimana Prossima</button>
+  </div>
+  <div style="overflow-x:auto;margin-top:4px">
+  <div style="display:grid;grid-template-columns:48px repeat(6,1fr);gap:3px;min-width:540px">
+    <div></div>
+    ${days.map((dy,di)=>`<div style="background:var(--t);color:#fff;padding:8px 5px;text-align:center;font-size:11px;font-weight:800;border-radius:6px;${di===todayI?'outline:2px solid var(--or);outline-offset:2px;':''}">${dy}<div style="font-size:9px;font-weight:400;opacity:.8;margin-top:1px">${fmt(nextWeekDates[di])}</div></div>`).join('')}
+    ${ore.map((ora,oi)=>
+      `<div class="orora">${ora}</div>`+
+      days.map((_,di)=>{
+        const k=`${di}_${oi}`, cell=or[k]||{};
+        return `<div class="orcell${di===todayI?' today':''}${cell.mat?' hasl':''}" onclick="openM('editOrario','${cls.id}','${k}')">
+          <span class="ored">✏️</span>
+          ${cell.mat?`<span style="font-weight:900;color:var(--td);font-size:11px">${cell.mat}</span>`:''}
+          ${cell.note?`<span style="font-size:9px;color:var(--gy)">${cell.note.substring(0,18)}</span>`:''}
+          ${!cell.mat?`<span style="color:var(--gym);font-size:18px">+</span>`:''}
+        </div>`;}).join('')
+    ).join('')}
+  </div></div>
+  ${pianificate.length>0?`
+  <div style="margin-top:20px">
+    <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;margin-bottom:10px;color:var(--td)">📋 Lezioni Pianificate <span style="background:var(--or);color:#fff;border-radius:10px;padding:2px 10px;font-size:12px;margin-left:6px">${pianificate.length}</span></div>
+    <div class="card"><table class="tbl">
+      <thead><tr><th>DATA</th><th>ORA</th><th>MATERIA</th><th>ARGOMENTO</th><th>NOTE</th><th></th></tr></thead>
+      <tbody>${pianificate.sort((a,b)=>dSrt(a.data,b.data)||(a.ora>b.ora?1:-1)).map(l=>`<tr style="background:var(--orb)">
+        <td style="font-weight:700;white-space:nowrap">${l.data}</td>
+        <td style="text-align:center;font-weight:700;color:var(--t)">${l.ora||'—'}</td>
+        <td style="color:var(--t);font-weight:700;font-size:12px">${l.materia||cls.materia}</td>
+        <td>${l.arg||'—'}</td>
+        <td style="font-size:12px;color:var(--gy)">${l.nota||''}</td>
+        <td style="white-space:nowrap">
+          <button class="btn bg bsm" onclick="confermaPianificata('${l.id}','${cls.id}')">✅ Conferma</button>
+          <button class="btn bo bsm" style="margin-left:3px" onclick="openM('editPianificata','${cls.id}','${l.id}')">✏️</button>
+          <button class="btn br bsm" style="margin-left:3px" onclick="delPianificata('${l.id}','${cls.id}')">🗑️</button>
+        </td>
+      </tr>`).join('')}
+      </tbody>
+    </table></div>
+    <div style="margin-top:8px;display:flex;gap:8px">
+      <button class="btn bg" onclick="confermatutte('${cls.id}')">✅ Conferma Tutte</button>
+    </div>
+  </div>`:''}`;
+}
+
+// ═══════════════════════════════════════════════════
+// CALENDARIO
+// ═══════════════════════════════════════════════════
+function pgCal(c){
+  const d=D(), oggi=new Date();
+  if(!CUR._calMese) CUR._calMese={y:oggi.getFullYear(),m:oggi.getMonth()};
+  const anno=CUR._calMese.y, mese=CUR._calMese.m;
+  const nm=new Date(anno,mese,1).toLocaleDateString('it-IT',{month:'long',year:'numeric'});
+  const pG=new Date(anno,mese,1).getDay(), gM=new Date(anno,mese+1,0).getDate();
+  const off=pG===0?6:pG-1;
+  const days=[]; for(let i=0;i<off;i++) days.push(null); for(let i=1;i<=gM;i++) days.push(i);
+  c.innerHTML=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="btn bo bsm" onclick="calNav(-1)">◀</button>
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;text-transform:capitalize">📅 ${nm}</div>
+      <button class="btn bo bsm" onclick="calNav(1)">▶</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn bt" onclick="openM('addEvento')">➕ Evento Personale</button>
+      ${d.classi.length?`<button class="btn bo" onclick="openM('addEventoClasse')">🏫 Evento Classe</button>`:''}
+    </div>
+  </div>
+  <div style="display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap">
+    ${[['#e85d5d','Annotazione'],['#2eaab1','Promemoria'],['#f5a623','Personale'],['#27ae60','Compiti'],['#8e44ad','Verifica Classe']].map(([col,lab])=>
+      `<span style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700"><span style="width:12px;height:12px;background:${col};border-radius:3px;display:inline-block"></span>${lab}</span>`).join('')}
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+    ${['Lun','Mar','Mer','Gio','Ven','Sab','Dom'].map(g=>`<div style="text-align:center;font-size:11px;font-weight:800;color:var(--t);padding:6px 0">${g}</div>`).join('')}
+    ${days.map(dn=>{
+      if(!dn) return '<div></div>';
+      const isT=dn===oggi.getDate()&&mese===oggi.getMonth()&&anno===oggi.getFullYear();
+      const evs=d.eventi.filter(e=>{ const p=e.data.split('/'); return +p[0]===dn&&+p[1]===(mese+1)&&+p[2]===anno; });
+      return `<div style="min-height:70px;border-radius:8px;padding:5px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;${isT?'border:2px solid var(--t);':''}" onclick="openM('addEventoGiorno','${dn}','${mese+1}','${anno}')">
+        <div style="font-size:12px;font-weight:800;${isT?'color:var(--t)':''}">
+          ${isT?`<span style="background:var(--t);color:#fff;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center">${dn}</span>`:dn}
+        </div>
+        ${evs.slice(0,3).map(ev=>`<div style="font-size:9px;font-weight:700;padding:2px 4px;border-radius:3px;margin-top:2px;background:${ev.col};color:#fff;cursor:pointer" onclick="event.stopPropagation();openM('editEvento','${ev.id}')">${(ev.clsNome?'🏫 ':'')+ev.testo.substring(0,14)}</div>`).join('')}
+        ${evs.length>3?`<div style="font-size:9px;color:var(--gy)">+${evs.length-3}</div>`:''}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+function calNav(dir){
+  if(!CUR._calMese){ const oggi=new Date(); CUR._calMese={y:oggi.getFullYear(),m:oggi.getMonth()}; }
+  CUR._calMese.m+=dir;
+  if(CUR._calMese.m>11){CUR._calMese.m=0;CUR._calMese.y++;}
+  if(CUR._calMese.m<0){CUR._calMese.m=11;CUR._calMese.y--;}
+  pgCal(gi('MC'));
+}
+
+// ═══════════════════════════════════════════════════
+// CLASSI
+// ═══════════════════════════════════════════════════
+function pgCls(c){
+  const d=D();
+  c.innerHTML=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+    <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px">👥 Classi</div>
+    <button class="btn bt" style="font-size:14px;padding:10px 22px" onclick="openM('addClasse')">➕ Nuova Classe</button>
+  </div>
+  ${d.classi.length===0?`<div class="empty"><div class="ei">👥</div><h3>Nessuna classe</h3><p>Crea la tua prima classe, poi aggiungi gli alunni — verranno ordinati alfabeticamente in automatico.</p><button class="btn bt" style="font-size:15px;padding:12px 28px" onclick="openM('addClasse')">➕ Crea la prima Classe</button></div>`:`
+  <div class="g2">${d.classi.map(cls=>{
+    const al=d.alunni.filter(a=>a.classeId===cls.id).sort((a,b)=>a.n-b.n);
+    return `<div class="card">
+      <div class="chdr">${cls.nome} · ${cls.materia}
+        <div style="display:flex;gap:6px">
+          <button class="btn bsm" style="background:rgba(255,255,255,.25);color:#fff;border:none" onclick="openM('editClasse','${cls.id}')">✏️</button>
+          <button class="btn bsm" style="background:rgba(255,255,255,.2);color:#fff;border:none" onclick="delClasse('${cls.id}')">🗑️</button>
+        </div>
+      </div>
+      <div style="padding:14px">
+        <div style="font-size:12px;color:var(--gy);margin-bottom:8px">${cls.sede||''} · <b>${al.length} alunni</b></div>
+        ${(cls.altreMaterie||[]).length?`<div style="font-size:11px;color:var(--bl);margin-bottom:8px;font-weight:700">📚 ${[cls.materia,...cls.altreMaterie].join(' · ')}</div>`:''}
+        ${cls.maxProve||cls.maxOra?`<div style="font-size:11px;color:var(--gy);margin-bottom:10px">${cls.maxProve?`Max prove: ${cls.maxProve}  `:''}${cls.maxOra?`Max sessioni: ${cls.maxOra}`:''}</div>`:''}
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <button class="btn bt bsm" onclick="gotoClass('${cls.id}')">📋 Registro</button>
+          <button class="btn bo bsm" onclick="openM('addAl','${cls.id}')">➕ Alunni</button>
+        </div>
+        ${al.length===0?`<div style="background:var(--orb);border-radius:8px;padding:10px;font-size:13px;color:var(--or);font-weight:700">⚠️ Nessun alunno — clicca "Alunni" per inserirli</div>`:`
+        <div style="max-height:180px;overflow-y:auto;border:1px solid var(--gyl);border-radius:8px">
+          ${al.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:7px 12px;border-bottom:1px solid var(--gyl)">
+            <span><b>${a.n}.</b> ${a.nome}</span>
+            <button style="background:none;border:none;color:var(--re);cursor:pointer;font-size:13px;font-weight:700;padding:2px 6px" onclick="delAlunno('${a.id}','${cls.id}')">✕</button>
+          </div>`).join('')}
+        </div>`}
+      </div>
+    </div>`;}).join('')}</div>`}`;
+}
+
+// ═══════════════════════════════════════════════════
+// STRUMENTI
+// ═══════════════════════════════════════════════════
+function pgStr(c){
+  const u=CUR, d=D();
+  c.innerHTML=`<div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;margin-bottom:18px">⚙️ Strumenti</div>
+  <div class="g2">
+    <div class="card" style="padding:22px">
+      <h3 style="font-family:'Nunito',sans-serif;font-weight:900;margin-bottom:16px;font-size:17px">👤 Profilo</h3>
+      <div style="font-size:14px;display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
+        <div><b>Nome:</b> ${u.nome}</div><div><b>Scuola:</b> ${u.scuola}</div>
+        <div><b>Materia:</b> ${u.materia}</div><div><b>Username:</b> ${u.username}</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn bt" onclick="openM('editProfilo')">✏️ Modifica</button>
+        <button class="btn bo" onclick="openM('cambiaPass')">🔑 Password</button>
+      </div>
+    </div>
+    <div class="card" style="padding:22px">
+      <h3 style="font-family:'Nunito',sans-serif;font-weight:900;margin-bottom:16px;font-size:17px">📊 Statistiche</h3>
+      <div style="font-size:14px;display:flex;flex-direction:column;gap:10px">
+        <div>Classi: <b>${d.classi.length}</b></div>
+        <div>Alunni: <b>${d.alunni.length}</b></div>
+        <div>Voti orali: <b>${d.votiOrali.filter(v=>!v.meta).length}</b></div>
+        <div>Prove scritte: <b>${d.verifiche.length}</b></div>
+        <div>Compiti: <b>${d.compiti.length}</b></div>
+        <div>Note: <b>${d.note.length}</b></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════
+// MODAL ENGINE
+// ═══════════════════════════════════════════════════
+function openM(type,...args){
+  const [i1,i2,i3,i4]=args, d=D();
+  let h='';
+  const oreList=['1ª','2ª','3ª','4ª','5ª','6ª','7ª','8ª'];
+  const tipiNota=['Nota Disciplinare','Ammonizione','Allontanamento','Nota Generale','Comunicazione Famiglia','Ritardo'];
+
+  if(type==='addLez'||type==='editLez'){
+    const cls=d.classi.find(x=>x.id===i1), lz=type==='editLez'?d.programma.find(x=>x.id===i2):null;
+    const mats=[cls?.materia||CUR.materia||'',...(cls?.altreMaterie||CUR.altreMaterie||[])].filter((m,i,a)=>m&&a.indexOf(m)===i);
+    const cm=lz?d.compiti.find(x=>x.lId===lz.id):null;
+    h=mk(`${lz?'✏️ Modifica':'✏️ Firma'} Lezione — ${cls?.nome}`,`
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${lz?isoD(lz.data):td()}"></div>
+        <div class="fg2"><label>Ora</label><select id="mora" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          ${oreList.map(o=>`<option value="${o}"${(lz?.ora||'1ª')===o?' selected':''}>${o} ora</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="fg2"><label>Materia</label><select id="mmat" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${mats.map(m=>`<option value="${m}"${(lz?.materia||CUR.materia)===m?' selected':''}>${m}</option>`).join('')}
+        <option value="__altro__">Altra materia...</option>
+      </select></div>
+      <div class="fg2 hidden" id="mmatAltroDiv"><label>Specifica materia</label><input type="text" id="mmatAltro"></div>
+      <div class="fg2"><label>Argomento svolto</label><textarea id="ma" placeholder="Descrivi l'argomento...">${lz?.arg||''}</textarea></div>
+      <div class="fg2"><label>Note informative (approfondimenti, riferimenti...)</label><textarea id="mn" placeholder="Opzionale...">${lz?.nota||''}</textarea></div>
+      <div class="fg2"><label>Compiti assegnati (lascia vuoto se nessuno)</label><input type="text" id="mcmp" value="${cm?.testo||''}" placeholder="Descrivi il compito..."></div>
+      <div class="fg2"><label>Da consegnare entro il</label><input type="date" id="mperil" value="${cm?isoD(cm.perIl):''}"></div>
+      <script>document.getElementById('mmat').onchange=function(){document.getElementById('mmatAltroDiv').classList.toggle('hidden',this.value!=='__altro__');};<\/script>
+    `,`${lz?`<button class="btn br" onclick="delLez('${i2}','${i1}');closeM()">🗑️</button>`:''}
+      <button class="btn bo" onclick="closeM()">Annulla</button>
+      <button class="btn bt" onclick="saveLez('${i1}','${i2||''}')">💾 Salva</button>`);
+  }
+  else if(type==='addLezMulti'){
+    const cls=d.classi.find(x=>x.id===i1);
+    const mats=[cls?.materia||CUR.materia||'',...(cls?.altreMaterie||CUR.altreMaterie||[])].filter((m,i,a)=>m&&a.indexOf(m)===i);
+    h=mk(`📋 Firma Più Ore — ${cls?.nome}`,'lg',`
+      <div class="info">Firma più ore contemporaneamente, anche con materie diverse.</div>
+      <div class="fg2"><label>Data</label><input type="date" id="md" value="${td()}"></div>
+      <div id="oreBlocks">
+        ${[0,1].map(i=>`<div class="ore-block" style="border:2px solid var(--gyl);border-radius:10px;padding:14px;margin-bottom:10px">
+          <div style="font-weight:800;color:var(--t);margin-bottom:10px;font-size:13px">⏰ Ora ${i+1}</div>
+          <div class="fr">
+            <div class="fg2"><label>Ora</label><select class="ore-sel" style="padding:9px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+              ${oreList.map((o,oi)=>`<option value="${o}"${oi===i?' selected':''}>${o} ora</option>`).join('')}
+            </select></div>
+            <div class="fg2"><label>Materia</label><select class="mat-sel" style="padding:9px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+              ${mats.map(m=>`<option value="${m}">${m}</option>`).join('')}
+            </select></div>
+          </div>
+          <div class="fg2"><label>Argomento</label><input type="text" class="arg-inp" placeholder="Argomento di questa ora..." style="padding:9px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none"></div>
+        </div>`).join('')}
+      </div>
+      <button class="btn bo bsm" onclick="aggiungiOraBlock('${i1}')" style="margin-bottom:14px">+ Aggiungi altra ora</button>
+      <div class="fg2"><label>Compiti assegnati (comune a tutte le ore)</label><input type="text" id="mcmp" placeholder="Lascia vuoto se nessun compito"></div>
+      <div class="fg2"><label>Da consegnare entro il</label><input type="date" id="mperil"></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveMultiOre('${i1}')">💾 Firma tutte</button>`);
+  }
+  else if(type==='supplenza'){
+    const cls=d.classi.find(x=>x.id===i1);
+    h=mk(`🔄 Supplenza — ${cls?.nome}`,`
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${td()}"></div>
+        <div class="fg2"><label>Ora</label><select id="mora" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          ${oreList.map(o=>`<option>${o} ora</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="fg2"><label>Docente supplito</label><input type="text" id="msupDoc" placeholder="Es. Rossi Mario"></div>
+      <div class="fg2"><label>Materia supplita</label><input type="text" id="msupMat" placeholder="Es. Matematica"></div>
+      <div class="fg2"><label>Attività svolta</label><textarea id="ma" placeholder="Cosa è stato fatto durante la supplenza..."></textarea></div>
+      <div class="fg2"><label>Note</label><input type="text" id="mn" placeholder="Opzionale..."></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveSupplenza('${i1}')">💾 Firma Supplenza</button>`);
+  }
+  else if(type==='addCmp'){
+    h=mk('📚 Assegna Compito',`
+      <div class="fg2"><label>Data assegnazione</label><input type="date" id="md" value="${td()}"></div>
+      <div class="fg2"><label>Descrizione compito</label><textarea id="ma" placeholder="Descrivi il compito..."></textarea></div>
+      <div class="fg2"><label>Da consegnare entro il</label><input type="date" id="mperil"></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveCmp('${i1}')">💾 Salva</button>`);
+  }
+  else if(type==='addCmpOnLez'){
+    h=mk('📚 Compito per questa Lezione',`
+      <div class="fg2"><label>Descrizione compito</label><textarea id="ma" placeholder="Descrivi il compito..."></textarea></div>
+      <div class="fg2"><label>Da consegnare entro il</label><input type="date" id="mperil"></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveCmpOnLez('${i1}','${i2}')">💾 Salva</button>`);
+  }
+  else if(type==='setOra'){
+    const al=d.alunni.find(x=>x.id===i2);
+    const labels={ing:'Ingresso posticipato',usc:'Uscita anticipata',fc:'Fuori classe'};
+    const ap=d.appello.find(x=>x.aid===i2&&x.cid===i1&&x.data===i4)||{};
+    const curVal=i3==='ing'?ap.ingresso:i3==='usc'?ap.uscita:ap.fuoriClasse;
+    h=mk(`⏰ ${labels[i3]||''} — ${al?.nome}`,`
+      <div class="fg2"><label>Orario (es. 09:15)</label><input type="time" id="morario" value="${curVal||''}" style="font-size:16px"></div>
+      <div class="fg2"><label>Note</label><input type="text" id="mn" placeholder="Opzionale..." value="${ap.note||''}"></div>
+    `,`${curVal?`<button class="btn br" onclick="clearOra('${i1}','${i2}','${i3}','${i4}')">🗑️ Rimuovi</button>`:''}
+      <button class="btn bo" onclick="closeM()">Annulla</button>
+      <button class="btn bt" onclick="saveOra('${i1}','${i2}','${i3}','${i4}')">💾 Salva</button>`);
+  }
+  else if(type==='evMulti'){
+    const cls=d.classi.find(x=>x.id===i1);
+    const alunni=d.alunni.filter(a=>a.classeId===i1).sort((a,b)=>a.n-b.n);
+    h=mk(`➕ Evento Multiplo — ${cls?.nome}`,'lg',`
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${i2||td()}"></div>
+        <div class="fg2"><label>Tipo</label><select id="mstat" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          <option value="A">🔴 Assenza</option><option value="R">🟡 Ritardo</option>
+          <option value="U">🔵 Uscita anticipata</option><option value="F">🚶 Fuori classe</option>
+          <option value="P">🟢 Presente</option>
+        </select></div>
+      </div>
+      <div class="fg2"><label>Note (applicate a tutti i selezionati)</label><input type="text" id="mn" placeholder="Es. Gita scolastica..."></div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <button class="btn bo bsm" onclick="selAll(true)">✓ Tutti</button>
+        <button class="btn bo bsm" onclick="selAll(false)">✗ Nessuno</button>
+      </div>
+      <div style="max-height:300px;overflow-y:auto;border:2px solid var(--gyl);border-radius:10px;padding:4px">
+        ${alunni.map(a=>`<label style="display:flex;align-items:center;gap:10px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--gyl)">
+          <input type="checkbox" class="selA" data-id="${a.id}" style="width:16px;height:16px">
+          <span style="font-weight:700;font-size:13px">${a.n}. ${a.nome}</span>
+        </label>`).join('')}
+      </div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveEvMulti('${i1}')">💾 Applica</button>`);
+  }
+  else if(type==='giust'){
+    const al=d.alunni.find(x=>x.id===i2);
+    const ev=d.appello.filter(x=>x.aid===i2&&x.cid===i1&&x.stato!=='P').sort((a,b)=>dSrt(b.data,a.data));
+    h=mk(`📋 Giustificazioni — ${al?.nome}`,'lg',`
+      ${ev.length===0?'<p style="color:var(--gy);padding:16px 0">Nessun evento da giustificare.</p>':`
+      <div class="fg2"><label>Motivazione (per i selezionati)</label><input type="text" id="mMotiv" placeholder="Es. Malattia, Visita medica, Motivi familiari..."></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="btn bo bsm" onclick="selAll(true)">✓ Seleziona tutti</button>
+        <button class="btn bo bsm" onclick="selAll(false)">✗ Nessuno</button>
+      </div>
+      <div style="border:2px solid var(--gyl);border-radius:10px;overflow:hidden;max-height:360px;overflow-y:auto">
+      <table class="tbl">
+        <thead><tr><th style="width:36px"></th><th>DATA</th><th>TIPO</th><th>STATO</th><th>MOTIVAZIONE</th><th></th></tr></thead>
+        <tbody>${ev.map(e=>`<tr style="background:${e.giustificato?'var(--grb)':''}">
+          <td><input type="checkbox" class="selA" data-id="${e.id}" ${e.giustificato?'disabled':''} style="width:16px;height:16px"></td>
+          <td style="font-weight:700">${e.data}</td>
+          <td><span style="font-size:11px;font-weight:700;color:${e.stato==='A'?'var(--re)':e.stato==='R'?'var(--or)':'var(--bl)'}">${e.stato==='A'?'Assenza':e.stato==='R'?'Ritardo':'Uscita'}</span></td>
+          <td style="font-weight:700">${e.giustificato?'<span style="color:var(--gr)">✓ Giustificato</span>':'<span style="color:var(--or)">Da giustificare</span>'}</td>
+          <td style="font-size:12px;color:var(--gy)">${e.motivazione||e.note||''}</td>
+          <td>${!e.giustificato
+            ?`<button class="btn bg bsm" onclick="giustifica1('${e.id}','${i1}','${i2}')">✓</button>`
+            :`<button class="btn br bsm" onclick="rimuoviGiust('${e.id}','${i1}','${i2}')">✕</button>`}
+          </td>
+        </tr>`).join('')}
+        </tbody>
+      </table></div>`}
+    `,`<button class="btn bo" onclick="closeM()">Chiudi</button>
+       ${ev.filter(e=>!e.giustificato).length>0?`<button class="btn bg" onclick="giustificaSelezionati('${i1}','${i2}')">✅ Valida selezionati</button>`:''}`);
+  }
+  else if(type==='addSessOrale'){
+    const cls=d.classi.find(x=>x.id===i1);
+    const mats=[cls?.materia||CUR.materia||'',...(cls?.altreMaterie||[])].filter((m,i,a)=>m&&a.indexOf(m)===i);
+    h=mk('📋 Crea Sessione Orale',`
+      <div class="info">Crea la sessione, poi inserisci i voti con il pulsante + accanto a ogni alunno.</div>
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${td()}"></div>
+        <div class="fg2"><label>Etichetta (es. Int.1)</label><input type="text" id="met" placeholder="Es. Interrogazione 1"></div>
+      </div>
+      <div class="fg2"><label>Materia</label><select id="mmateria" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${mats.map(m=>`<option value="${m}">${m}</option>`).join('')}
+      </select></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveSessOrale('${i1}')">💾 Crea Sessione</button>`);
+  }
+  else if(type==='editSessOrale'){
+    const s=d.votiOrali.find(v=>v.sId===i2);
+    h=mk('✏️ Modifica Sessione',`
+      <div class="fg2"><label>Data</label><input type="date" id="md" value="${s?isoD(s.data):td()}"></div>
+      <div class="fg2"><label>Etichetta</label><input type="text" id="met" value="${s?.et||''}"></div>
+    `,`<button class="btn br" onclick="delSessOrale('${i1}','${i2}');closeM()">🗑️ Elimina sessione</button>
+       <button class="btn bo" onclick="closeM()">Annulla</button>
+       <button class="btn bt" onclick="updateSessOrale('${i1}','${i2}')">💾 Salva</button>`);
+  }
+  else if(type==='addSessOraleMensile'){
+    const cls=d.classi.find(x=>x.id===i1);
+    const alunni=d.alunni.filter(a=>a.classeId===i1).sort((a,b)=>a.n-b.n);
+    const mats=[cls?.materia||CUR.materia||'',...(cls?.altreMaterie||[])].filter((m,i,a)=>m&&a.indexOf(m)===i);
+    h=mk(`📅 Sessione Mensile — ${cls?.nome}`,'lg',`
+      <div class="info">Ogni alunno può essere interrogato in una data diversa. Lascia vuota la data per saltare quell'alunno.</div>
+      <div class="fr">
+        <div class="fg2"><label>Etichetta sessione (es. Int. Novembre)</label><input type="text" id="met" placeholder="Es. Interrogazioni Novembre"></div>
+        <div class="fg2"><label>Data default <span style="font-weight:400;color:var(--gy)">(pre-compila tutte)</span></label><input type="date" id="mdDef" value="${td()}" oninput="prefillMensile(this.value)"></div>
+      </div>
+      <div class="fg2"><label>Materia</label><select id="mmateria" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${mats.map(m=>`<option value="${m}">${m}</option>`).join('')}
+      </select></div>
+      <div style="max-height:360px;overflow-y:auto;border:2px solid var(--gyl);border-radius:10px">
+        <table class="tbl">
+          <thead><tr><th>ALUNNO</th><th style="min-width:160px">DATA</th><th style="min-width:120px">VOTO</th><th>COMMENTO</th><th style="text-align:center">ESCLUDI</th></tr></thead>
+          <tbody id="mensileRows">${alunni.map(a=>`<tr>
+            <td style="font-weight:700">${a.n}. ${a.nome}</td>
+            <td><input type="date" id="msd_${a.id}" value="${td()}" class="mDateInp" style="padding:5px 8px;border:2px solid var(--gyl);border-radius:7px;outline:none;font-size:12px;width:100%"></td>
+            <td><select id="msv_${a.id}" style="width:100%;padding:6px 4px;border:2px solid var(--gyl);border-radius:7px;outline:none;font-size:13px">${vOpts('',true)}</select></td>
+            <td><input type="text" id="msc_${a.id}" placeholder="..." style="width:100%;padding:5px 6px;border:1px solid var(--gyl);border-radius:6px;font-size:12px"></td>
+            <td style="text-align:center"><input type="checkbox" id="msx_${a.id}" style="width:15px;height:15px"></td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>
+      <script>
+        function prefillMensile(v){ document.querySelectorAll('.mDateInp').forEach(inp=>{ inp.value=v; }); }
+      <\/script>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveSessOraleMensile('${i1}')">💾 Salva Sessione</button>`);
+  }
+  else if(type==='addVotoOrale'){
+    const al=d.alunni.find(x=>x.id===i2);
+    const sessMap={};
+    d.votiOrali.filter(v=>v.classeId===i1).forEach(v=>{ if(!sessMap[v.sId]) sessMap[v.sId]={id:v.sId,et:v.et,data:v.data}; });
+    const sessArr=Object.values(sessMap).sort((a,b)=>dSrt(a.data,b.data));
+    h=mk(`➕ Voto Orale — ${al?.nome}`,`
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${td()}"></div>
+        <div class="fg2"><label>Voto</label><select id="mvoto" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none;font-size:14px">${vOpts()}</select></div>
+      </div>
+      <div class="fg2"><label>Sessione <span style="font-weight:400;color:var(--gy)">(opzionale)</span></label>
+        <select id="msId" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none" onchange="document.getElementById('nuovaSessDiv').classList.toggle('hidden',this.value!=='__new__')">
+          <option value="">— Voto libero —</option>
+          ${sessArr.map(s=>`<option value="${s.id}">${s.et||'Sessione'} · ${s.data}</option>`).join('')}
+          <option value="__new__">➕ Crea nuova sessione</option>
+        </select>
+      </div>
+      <div class="fg2 hidden" id="nuovaSessDiv"><label>Etichetta nuova sessione</label><input type="text" id="mNewEt" placeholder="Es. Int.2"></div>
+      <div class="fg2"><label>Escludi dalla media</label><select id="mex" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        <option value="no">No — includi nella media</option><option value="si">Sì — escludi (azzurro)</option>
+      </select></div>
+      <div class="fg2"><label>Commento</label><input type="text" id="mcomm" placeholder="Facoltativo..."></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveVotoOrale('${i1}','${i2}')">💾 Salva</button>`);
+  }
+  else if(type==='editVotoOrale'){
+    const al=d.alunni.find(x=>x.id===i3);
+    const vt=d.votiOrali.find(v=>v.sId===i2&&v.aid===i3&&!v.meta);
+    h=mk(`✏️ Voto orale — ${al?.nome}`,`
+      <div class="fr">
+        <div class="fg2"><label>Voto</label><select id="mvoto" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none;font-size:14px">${vOpts(vt?vL(vt.val):'')}</select></div>
+        <div class="fg2"><label>Escludi dalla media</label><select id="mex" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          <option value="no"${!vt?.ex?' selected':''}>No</option><option value="si"${vt?.ex?' selected':''}>Sì (azzurro)</option>
+        </select></div>
+      </div>
+      <div class="fg2"><label>Commento</label><input type="text" id="mcomm" value="${vt?.comm||''}"></div>
+    `,`${vt?`<button class="btn br" onclick="delVotoOrale('${vt.id}','${i1}');closeM()">🗑️</button>`:''}
+      <button class="btn bo" onclick="closeM()">Annulla</button>
+      <button class="btn bt" onclick="saveEditVotoOrale('${i1}','${i2}','${i3}')">💾 Salva</button>`);
+  }
+  else if(type==='addVerifica'||type==='addVerificaPra'){
+    const isPra=type==='addVerificaPra';
+    const cls=d.classi.find(x=>x.id===i1);
+    const mats=[cls?.materia||CUR.materia||'',...(cls?.altreMaterie||[])].filter((m,i,a)=>m&&a.indexOf(m)===i);
+    h=mk(isPra?'🛠️ Nuova Prova Pratica':'✍️ Nuova Prova Scritta',`
+      <div class="fr">
+        <div class="fg2"><label>Data prova</label><input type="date" id="md" value="${td()}"></div>
+        <div class="fg2"><label>Tipo</label><select id="mtipo" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          <option${isPra?'':' selected'}>Scritto</option><option${isPra?' selected':''}>Pratico</option><option>Orale</option>
+        </select></div>
+      </div>
+      <div class="fg2"><label>Materia</label><select id="mmateria" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${mats.map(m=>`<option value="${m}">${m}</option>`).join('')}
+      </select></div>
+      <div class="fg2"><label>Etichetta (es. VER1 TRIM)</label><input type="text" id="met" placeholder="Es. VER1 TRIM"></div>
+      <div class="fg2">
+        <label>Peso sulla media: <b><span id="pVal">100</span>%</b> <span style="font-size:11px;color:var(--gy)">(0 = non conta — verrà azzurra)</span></label>
+        <input type="range" id="mpeso" min="0" max="100" value="100" oninput="gi('pVal').textContent=this.value" style="width:100%;margin-top:8px;accent-color:var(--t)">
+      </div>
+      <div class="fg2"><label>Descrizione prova <span style="font-weight:400;color:var(--gy)">(riportata automaticamente come commento nei voti)</span></label>
+        <textarea id="mdesc" placeholder="Es. Verifica cap.5-6 equazioni di secondo grado..."></textarea>
+      </div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveVerifica('${i1}')">💾 Crea Prova</button>`);
+  }
+  else if(type==='editVerifica'){
+    const ver=d.verifiche.find(x=>x.id===i2);
+    const cls=d.classi.find(x=>x.id===i1);
+    const mats=[cls?.materia||CUR.materia||'',...(cls?.altreMaterie||[])].filter((m,i,a)=>m&&a.indexOf(m)===i);
+    h=mk(`✏️ Modifica Prova — ${ver?.et||''}`,`
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${ver?isoD(ver.data):td()}"></div>
+        <div class="fg2"><label>Tipo</label><select id="mtipo" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          ${['Scritto','Pratico','Orale'].map(t=>`<option${ver?.tipo===t?' selected':''}>${t}</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="fg2"><label>Materia</label><select id="mmateria" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${mats.map(m=>`<option value="${m}"${(ver?.materia||cls?.materia)===m?' selected':''}>${m}</option>`).join('')}
+      </select></div>
+      <div class="fg2"><label>Etichetta</label><input type="text" id="met" value="${ver?.et||''}"></div>
+      <div class="fg2"><label>Peso: <b><span id="pVal2">${ver?.peso||100}</span>%</b></label>
+        <input type="range" id="mpeso" min="0" max="100" value="${ver?.peso||100}" oninput="gi('pVal2').textContent=this.value" style="width:100%;margin-top:8px;accent-color:var(--t)">
+      </div>
+      <div class="fg2"><label>Descrizione</label><textarea id="mdesc">${ver?.desc||''}</textarea></div>
+    `,`<button class="btn br" onclick="delVerifica('${i2}','${i1}');closeM()">🗑️ Elimina prova</button>
+       <button class="btn bo" onclick="closeM()">Annulla</button>
+       <button class="btn bt" onclick="saveEditVerifica('${i1}','${i2}')">💾 Salva</button>
+       <button class="btn bg" onclick="closeM();openM('insVotiVer','${i1}','${i2}')">✏️ Inserisci voti</button>`);
+  }
+  else if(type==='insVotiVer'){
+    const ver=d.verifiche.find(x=>x.id===i2), cls=d.classi.find(x=>x.id===i1);
+    const alunni=d.alunni.filter(a=>a.classeId===i1).sort((a,b)=>a.n-b.n);
+    h=mk(`✍️ Voti — ${ver?.et||ver?.data} · ${cls?.nome}`,'lg',`
+      ${ver?.desc?`<div class="info"><b>📋 Descrizione:</b> ${ver.desc}</div>`:''}
+      <div class="info" style="font-size:11px">💡 Digita un numero nel campo Voto per filtrare automaticamente le 4 varianti (es. "7" mostra 6+, 7-, 7, 7+)</div>
+      <div style="max-height:440px;overflow-y:auto;border:2px solid var(--gyl);border-radius:10px">
+        <table class="tbl">
+          <thead><tr><th>ALUNNO</th><th style="min-width:160px">VOTO</th><th style="text-align:center">ESCLUDI</th><th>COMMENTO PERS.</th></tr></thead>
+          <tbody>${alunni.map(a=>{
+            const e=(ver?.voti||{})[a.id]||{};
+            const cur=e.val!==undefined&&e.val!==null?(typeof e.val==='string'?e.val:vL(e.val)):'';
+            return `<tr>
+              <td style="font-weight:700">${a.n}. ${a.nome}</td>
+              <td>
+                <div style="display:flex;gap:4px;align-items:center">
+                  <input type="text" id="vf_${a.id}" placeholder="N°" value="${cur?cur.replace(/[^0-9]/g,''):''}" oninput="filterVotiRow('${a.id}',this.value)" style="width:44px;padding:5px 6px;border:2px solid var(--gyl);border-radius:7px;outline:none;font-size:13px;font-weight:700;text-align:center">
+                  <select id="vv_${a.id}" style="flex:1;padding:6px 4px;border:2px solid var(--gyl);border-radius:7px;outline:none;font-size:13px">${vOpts(cur,true)}</select>
+                </div>
+              </td>
+              <td style="text-align:center"><input type="checkbox" id="vx_${a.id}"${e.ex?' checked':''} style="width:16px;height:16px"></td>
+              <td><input type="text" id="vc_${a.id}" value="${e.commP||''}" style="width:100%;padding:5px 8px;border:1px solid var(--gyl);border-radius:6px;font-size:12px" placeholder="Opzionale"></td>
+            </tr>`;}).join('')}
+          </tbody>
+        </table>
+      </div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveVotiVer('${i1}','${i2}')">💾 Salva tutti</button>`);
+  }
+  else if(type==='addNotaGen'){
+    const tipiGen=['Comunicazione Classe','Avviso Generale','Annotazione','Promemoria','Nota Collettiva'];
+    h=mk('📢 Nota Generale — Tutta la Classe',`
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${td()}"></div>
+        <div class="fg2"><label>Tipo</label><select id="mtipo" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          ${tipiGen.map(t=>`<option>${t}</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="fg2"><label>Descrizione</label><textarea id="ma" placeholder="Scrivi la nota per tutta la classe..."></textarea></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveNotaGen('${i1}')">💾 Salva</button>`);
+  }
+  else if(type==='addNotaAlunno'){
+    const al=d.alunni.find(x=>x.id===i2);
+    h=mk(`📝 Nuova Nota — ${al?.nome}`,`
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${td()}"></div>
+        <div class="fg2"><label>Tipo</label><select id="mtipo" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          ${tipiNota.map(t=>`<option>${t}</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="fg2"><label>Descrizione</label><textarea id="ma" placeholder="Descrivi l'accaduto..."></textarea></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveNotaAlunno('${i1}','${i2}')">💾 Salva</button>`);
+  }
+  else if(type==='addNota'){
+    const alunni=d.alunni.filter(a=>a.classeId===i1).sort((a,b)=>a.n-b.n);
+    h=mk('📝 Nuova Nota',`
+      <div class="fg2"><label>Alunno</label><select id="maid" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        <option value="">— Seleziona —</option>${alunni.map(a=>`<option value="${a.id}">${a.n}. ${a.nome}</option>`).join('')}
+      </select></div>
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${td()}"></div>
+        <div class="fg2"><label>Tipo</label><select id="mtipo" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          ${tipiNota.map(t=>`<option>${t}</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="fg2"><label>Descrizione</label><textarea id="ma" placeholder="Descrivi l'accaduto..."></textarea></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveNota('${i1}')">💾 Salva</button>`);
+  }
+  else if(type==='genSettimanaPross'){
+    const cls=d.classi.find(x=>x.id===i1);
+    const or=d.orario[i1]||{};
+    const mats=[cls?.materia||CUR.materia||'',...(cls?.altreMaterie||CUR.altreMaterie||[])].filter((m,i,a)=>m&&a.indexOf(m)===i);
+    // compute next monday
+    const oggi2=new Date();
+    const dow2=oggi2.getDay();
+    const dtnm=(dow2===0)?1:(8-dow2);
+    const lunP=new Date(oggi2); lunP.setDate(oggi2.getDate()+dtnm);
+    const dayNames=['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
+    const oreList2=['1ª','2ª','3ª','4ª','5ª','6ª'];
+    // collect cells that have a materia set in the orario
+    const celle=[];
+    for(let di=0;di<6;di++){
+      for(let oi=0;oi<6;oi++){
+        const k=`${di}_${oi}`, cell=or[k];
+        if(cell&&cell.mat){
+          const dt=new Date(lunP); dt.setDate(lunP.getDate()+di);
+          const iso=dt.toISOString().split('T')[0];
+          celle.push({k,di,oi,cell,iso,dt});
+        }
+      }
+    }
+    const fmt2=dt=>dt.toLocaleDateString('it-IT',{weekday:'long',day:'2-digit',month:'2-digit'});
+    h=mk(`📅 Genera Settimana — ${cls?.nome}`,'lg',`
+      <div class="info">Le lezioni vengono create come <b>pianificate</b>. Potrai modificarle e confermarle quando vuoi dal pannello Orario.</div>
+      ${celle.length===0?`<div style="color:var(--gy);font-size:13px;padding:12px 0">Nessuna cella con materia configurata nell'orario. Aggiungi prima le materie alle celle dell'orario.</div>`:`
+      <div style="max-height:420px;overflow-y:auto">
+        ${celle.map((c2,idx)=>`<div style="border:2px solid var(--gyl);border-radius:10px;padding:12px;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <input type="checkbox" id="chk_${idx}" checked style="width:16px;height:16px;accent-color:var(--t)">
+            <span style="font-weight:800;color:var(--td);font-size:13px">${fmt2(c2.dt)} · ${oreList2[c2.oi]} ora</span>
+          </div>
+          <div class="fr">
+            <div class="fg2"><label>Materia</label><select id="pmat_${idx}" style="padding:8px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+              ${mats.map(m=>`<option value="${m}"${m===c2.cell.mat?' selected':''}>${m}</option>`).join('')}
+              <option value="${c2.cell.mat}"${!mats.includes(c2.cell.mat)?' selected':''}>${c2.cell.mat}</option>
+            </select></div>
+            <div class="fg2"><label>Argomento (facoltativo)</label><input type="text" id="parg_${idx}" placeholder="Lascia vuoto per compilare dopo..." style="padding:8px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none" value="${c2.cell.note||''}"></div>
+          </div>
+        </div>`).join('')}
+      </div>`}
+      <script>window._pCelle=${JSON.stringify(celle.map((c2,idx)=>({idx,iso:c2.iso,ora:oreList2[c2.oi]})))};<\/script>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button>${celle.length?`<button class="btn bt" onclick="savePianificazione('${i1}')">📋 Pianifica</button>`:''}`);
+  }
+  else if(type==='editPianificata'){
+    const lp=d.lezioniPianificate?.find(x=>x.id===i2);
+    const cls2=d.classi.find(x=>x.id===i1);
+    const mats=[cls2?.materia||CUR.materia||'',...(cls2?.altreMaterie||CUR.altreMaterie||[])].filter((m,i,a)=>m&&a.indexOf(m)===i);
+    h=mk('✏️ Modifica Lezione Pianificata',`
+      <div class="fr">
+        <div class="fg2"><label>Data</label><input type="date" id="md" value="${lp?isoD(lp.data):td()}"></div>
+        <div class="fg2"><label>Ora</label><select id="mora" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          ${['1ª','2ª','3ª','4ª','5ª','6ª','7ª','8ª'].map(o=>`<option value="${o}"${(lp?.ora||'1ª')===o?' selected':''}>${o} ora</option>`).join('')}
+        </select></div>
+      </div>
+      <div class="fg2"><label>Materia</label><select id="mmat" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${mats.map(m=>`<option value="${m}"${lp?.materia===m?' selected':''}>${m}</option>`).join('')}
+      </select></div>
+      <div class="fg2"><label>Argomento (facoltativo)</label><input type="text" id="ma" value="${lp?.arg||''}" placeholder="Lascia vuoto..."></div>
+      <div class="fg2"><label>Note</label><input type="text" id="mn" value="${lp?.nota||''}" placeholder="Opzionale..."></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button>
+       <button class="btn bt" onclick="saveEditPianificata('${i1}','${i2}')">💾 Salva</button>`);
+  }
+  else if(type==='editOrario'){
+    const cls=d.classi.find(x=>x.id===i1), cell=(d.orario[i1]||{})[i2]||{};
+    const days=['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
+    const [di,oi]=i2.split('_').map(Number);
+    h=mk(`✏️ ${days[di]} · ${oreList[oi]} · ${cls?.nome}`,`
+      <div class="fg2"><label>Materia / Attività</label><input type="text" id="mmat" value="${cell.mat||''}" placeholder="Es. Matematica, Lab., Supplenza..."></div>
+      <div class="fg2"><label>Note</label><textarea id="mn" placeholder="Argomento, attività...">${cell.note||''}</textarea></div>
+    `,`${cell.mat?`<button class="btn br" onclick="clearOrario('${i1}','${i2}');closeM()">🗑️</button>`:''}
+       <button class="btn bo" onclick="closeM()">Annulla</button>
+       <button class="btn bt" onclick="saveOrario('${i1}','${i2}')">💾 Salva</button>`);
+  }
+  else if(type==='addClasse'||type==='editClasse'){
+    const cls=type==='editClasse'?d.classi.find(x=>x.id===i1):null;
+    const altreM=(cls?.altreMaterie||[]);
+    h=mk(`${cls?'✏️ Modifica':'➕ Nuova'} Classe`,`
+      <div class="fr">
+        <div class="fg2"><label>Nome classe (es. 2A)</label><input type="text" id="mnome" value="${cls?.nome||''}"></div>
+        <div class="fg2"><label>Materia principale</label><input type="text" id="mmat" value="${cls?.materia||CUR.materia}"></div>
+      </div>
+      <div class="fg2">
+        <label>Materie aggiuntive <span style="font-weight:400;color:var(--gy)">(una per riga, se insegni più materie a questa classe)</span></label>
+        <textarea id="maltreM" style="min-height:80px;font-size:13px" placeholder="Es.&#10;Laboratorio&#10;Educazione civica">${altreM.join('\n')}</textarea>
+      </div>
+      <div class="fg2"><label>Sede / Plesso</label><input type="text" id="msede" value="${cls?.sede||''}" placeholder="Es. Sede principale"></div>
+      <div class="fg2">
+        <label>Massimo prove scritte/pratiche <span style="font-weight:400;color:var(--gy)">(lascia 0 per illimitato)</span></label>
+        <input type="number" id="mmaxProve" min="0" max="999" value="${cls?.maxProve||0}" style="padding:9px 12px;border:2px solid var(--gyl);border-radius:8px;width:100px;outline:none;font-size:14px">
+      </div>
+      <div class="fg2">
+        <label>Massimo sessioni orali <span style="font-weight:400;color:var(--gy)">(lascia 0 per illimitato)</span></label>
+        <input type="number" id="mmaxOra" min="0" max="999" value="${cls?.maxOra||0}" style="padding:9px 12px;border:2px solid var(--gyl);border-radius:8px;width:100px;outline:none;font-size:14px">
+      </div>
+    `,`${cls?`<button class="btn br" onclick="delClasse('${i1}');closeM()">🗑️</button>`:''}
+       <button class="btn bo" onclick="closeM()">Annulla</button>
+       <button class="btn bt" onclick="saveClasse('${i1||''}')">💾 Salva</button>`);
+  }
+  else if(type==='addAl'){
+    const cls=d.classi.find(x=>x.id===i1);
+    h=mk(`➕ Aggiungi Alunni — ${cls?.nome}`,`
+      <div class="info">Un nome per riga. Verranno <b>ordinati alfabeticamente</b> e numerati automaticamente.</div>
+      <div class="fg2"><label>Nomi alunni</label><textarea id="malunni" style="min-height:180px;font-size:13px" placeholder="COGNOME NOME&#10;COGNOME NOME&#10;..."></textarea></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveAlunni('${i1}')">💾 Aggiungi</button>`);
+  }
+  else if(type==='addMsg'){
+    h=mk('📌 Nuovo Messaggio',`
+      <div class="fr">
+        <div class="fg2"><label>Categoria</label><select id="mcat" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+          <option>DOCUMENTI</option><option>COMUNICAZIONI</option><option>AVVISI</option>
+        </select></div>
+        <div class="fg2"><label>Numero documento</label><input type="text" id="mnum" placeholder="Es. 75/D"></div>
+      </div>
+      <div class="fg2"><label>Messaggio</label><textarea id="ma" placeholder="Testo..."></textarea></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveMsg()">💾 Pubblica</button>`);
+  }
+  else if(type==='addEvento'||type==='addEventoGiorno'){
+    const gg=i1?i1.padStart(2,'0'):'', mm=i2?i2.padStart(2,'0'):'', yy=i3||'';
+    const defDate=gg?`${yy}-${mm}-${gg}`:td();
+    h=mk('📅 Aggiungi Evento Personale',`
+      <div class="fg2"><label>Tipo</label><select id="mtipo" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        <option value="annotazione">🔴 Annotazione</option><option value="promemoria">🔵 Promemoria</option>
+        <option value="personale">🟡 Personale</option><option value="compiti">🟢 Compiti</option>
+      </select></div>
+      <div class="fg2"><label>Data</label><input type="date" id="md" value="${defDate}"></div>
+      <div class="fg2"><label>Descrizione</label><input type="text" id="ma" placeholder="Es. Riunione ore 15:00..."></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveEvento()">💾 Salva</button>`);
+  }
+  else if(type==='addEventoClasse'){
+    const gg=i1?i1.padStart(2,'0'):'', mm=i2?i2.padStart(2,'0'):'', yy=i3||'';
+    const defDate=gg?`${yy}-${mm}-${gg}`:td();
+    h=mk('🏫 Evento per Classe',`
+      <div class="fg2"><label>Classe</label><select id="mclsId" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${d.classi.map(cl=>`<option value="${cl.id}">${cl.nome} — ${cl.materia}</option>`).join('')}
+      </select></div>
+      <div class="fg2"><label>Tipo</label><select id="mtipo" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        <option value="verifica">📝 Verifica</option><option value="interrogazione">🗣️ Interrogazione</option>
+        <option value="consegna">📤 Consegna</option><option value="annotazione">🔴 Annotazione</option>
+        <option value="promemoria">🔵 Promemoria</option>
+      </select></div>
+      <div class="fg2"><label>Data</label><input type="date" id="md" value="${defDate}"></div>
+      <div class="fg2"><label>Descrizione</label><input type="text" id="ma" placeholder="Es. Verifica cap. 5-6..."></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveEventoClasse()">💾 Salva</button>`);
+  }
+  else if(type==='editEvento'){
+    const ev=d.eventi.find(x=>x.id===i1);
+    const tipiCls=['verifica','interrogazione','consegna'];
+    const isClasse=ev&&tipiCls.includes(ev.tipo)||ev?.clsId;
+    h=mk('✏️ Modifica Evento',`
+      <div class="fg2"><label>Tipo</label><select id="mtipo" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${isClasse
+          ?['verifica','interrogazione','consegna','annotazione','promemoria'].map(t=>`<option value="${t}"${ev?.tipo===t?' selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')
+          :['annotazione','promemoria','personale','compiti'].map(t=>`<option value="${t}"${ev?.tipo===t?' selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')
+        }
+      </select></div>
+      <div class="fg2"><label>Data</label><input type="date" id="md" value="${ev?isoD(ev.data):td()}"></div>
+      <div class="fg2"><label>Descrizione</label><input type="text" id="ma" value="${ev?.testo||''}"></div>
+      ${isClasse&&d.classi.length?`<div class="fg2"><label>Classe</label><select id="mclsId" style="padding:10px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${d.classi.map(cl=>`<option value="${cl.id}"${ev?.clsId===cl.id?' selected':''}>${cl.nome} — ${cl.materia}</option>`).join('')}
+      </select></div>`:''}
+    `,`<button class="btn br" onclick="delEvento('${i1}')">🗑️ Elimina</button>
+       <button class="btn bo" onclick="closeM()">Annulla</button>
+       <button class="btn bt" onclick="saveEditEvento('${i1}')">💾 Salva</button>`);
+  }
+  else if(type==='profilo'){
+    const cls=d.classi.find(x=>x.id===i1), al=d.alunni.find(x=>x.id===i2);
+    const vO=d.votiOrali.filter(v=>v.aid===i2&&v.classeId===i1&&!v.meta);
+    const ver=d.verifiche.filter(v=>v.classeId===i1&&v.tipo!=='Pratico');
+    const verPra=d.verifiche.filter(v=>v.classeId===i1&&v.tipo==='Pratico');
+    const ap=d.appello.filter(x=>x.aid===i2&&x.cid===i1);
+    const mO=calcM(vO.map(v=>({v:v.val,p:1,ex:v.ex})));
+    const vSi=ver.map(v=>{ const e=(v.voti||{})[i2]; return e&&!e.ex&&e.val!==null&&!isNaN(+e.val)?{v:e.val,p:v.peso,ex:false}:null; }).filter(Boolean);
+    const mS=calcM(vSi);
+    const vPra=verPra.map(v=>{ const e=(v.voti||{})[i2]; return e&&!e.ex&&e.val!==null&&!isNaN(+e.val)?{v:e.val,p:v.peso,ex:false}:null; }).filter(Boolean);
+    const mP=calcM(vPra);
+    const arr=[mO,mS,mP].filter(x=>x!==null);
+    const mT=arr.length?arr.reduce((s,x)=>s+x,0)/arr.length:null;
+    const note=d.note.filter(n=>n.aid===i2&&n.cid===i1);
+    const evAss=ap.filter(x=>x.stato!=='P');
+    h=mk(`👤 ${al?.nome}`,'lg',`
+      <div class="sphdr">
+        <div class="spnm">${al?.nome}</div>
+        <div style="font-size:13px;opacity:.85;margin-top:3px">${cls?.nome} · ${cls?.materia}</div>
+        <div class="spst">
+          <div class="spsi"><div class="spsn">${fmtM(mO)}</div><div class="spsl">Media Orale</div></div>
+          <div class="spsi"><div class="spsn">${fmtM(mS)}</div><div class="spsl">Media Scritta</div></div>
+          ${mP!==null?`<div class="spsi"><div class="spsn">${fmtM(mP)}</div><div class="spsl">Media Pratico</div></div>`:''}
+          <div class="spsi" style="background:rgba(255,255,255,.35)"><div class="spsn" style="font-size:22px">${fmtM(mT)}</div><div class="spsl">⭐ Media Totale</div></div>
+          <div class="spsi"><div class="spsn" style="color:#ff8a80">${ap.filter(x=>x.stato==='A').length}</div><div class="spsl">Assenze</div></div>
+          <div class="spsi"><div class="spsn" style="color:#ffd54f">${ap.filter(x=>x.stato==='R').length}</div><div class="spsl">Ritardi</div></div>
+          <div class="spsi"><div class="spsn" style="color:#a8e6cf">${evAss.filter(x=>x.giustificato).length}</div><div class="spsl">Giustificate</div></div>
+        </div>
+      </div>
+      <div class="tbr" style="margin:0;padding:0 20px">
+        <div class="tbi act" onclick="spTab(this,'tsp0')">Orali (${vO.length})</div>
+        <div class="tbi" onclick="spTab(this,'tsp1')">Scritti</div>
+        <div class="tbi" onclick="spTab(this,'tsp2')">Assenze (${evAss.length})</div>
+        <div class="tbi" onclick="spTab(this,'tsp3')">Note (${note.length})</div>
+      </div>
+      <div style="padding:16px 20px">
+        <div id="tsp0">
+          ${vO.length===0?'<p style="color:var(--gy);font-size:13px">Nessun voto orale.</p>':
+            `<table class="tbl"><thead><tr><th>DATA</th><th>SESSIONE</th><th>VOTO</th><th>COMMENTO</th></tr></thead><tbody>
+            ${vO.sort((a,b)=>dSrt(a.data,b.data)).map(v=>`<tr>
+              <td style="font-weight:700">${v.data}</td><td>${v.et||'—'}</td>
+              <td><span class="grade ${v.ex?'cb':gCls(v.val)}">${vL(v.val)}${v.ex?' ⊘':''}</span></td>
+              <td style="font-size:12px">${v.comm||''}</td>
+            </tr>`).join('')}</tbody></table>`}
+        </div>
+        <div id="tsp1" class="hidden">
+          ${(ver.length+verPra.length)===0?'<p style="color:var(--gy);font-size:13px">Nessuna verifica.</p>':
+            `<table class="tbl"><thead><tr><th>DATA</th><th>PROVA</th><th>TIPO</th><th>VOTO</th><th>COMMENTO</th></tr></thead><tbody>
+            ${[...ver,...verPra].sort((a,b)=>dSrt(a.data,b.data)).map(v=>{ const e=(v.voti||{})[i2]; const isStr=e&&typeof e.val==='string'&&isNaN(+e.val);
+              return `<tr><td style="font-weight:700">${v.data}</td><td>${v.et||''}</td>
+                <td><span style="font-size:10px;font-weight:700;color:${v.tipo==='Pratico'?'var(--or)':v.tipo==='Orale'?'var(--bl)':'var(--t)'}">${v.tipo}</span></td>
+                <td>${e&&e.val!==undefined?`<span class="grade ${e.ex||v.peso===0?'cb':isStr?'cb':gCls(e.val)}">${isStr?e.val:vL(e.val)}${e.ex?' ⊘':''}</span>`:'<span class="grade ce">—</span>'}</td>
+                <td style="font-size:12px">${[e?.commP,v.desc].filter(Boolean).join(' · ')}</td></tr>`;}).join('')}
+            </tbody></table>`}
+        </div>
+        <div id="tsp2" class="hidden">
+          ${evAss.length===0?'<p style="color:var(--gy);font-size:13px">Nessuna assenza.</p>':
+            `<table class="tbl"><thead><tr><th>DATA</th><th>TIPO</th><th>STATO</th><th>MOTIVAZIONE</th></tr></thead><tbody>
+            ${evAss.sort((a,b)=>dSrt(b.data,a.data)).map(ev=>`<tr>
+              <td style="font-weight:700">${ev.data}</td>
+              <td><span style="font-size:12px;font-weight:700;color:${ev.stato==='A'?'var(--re)':ev.stato==='R'?'var(--or)':'var(--bl)'}">${ev.stato==='A'?'Assenza':ev.stato==='R'?'Ritardo':'Uscita'}</span></td>
+              <td>${ev.giustificato?'<span style="color:var(--gr);font-weight:700;font-size:12px">✓ Giustificata</span>':'<span style="color:var(--or);font-weight:700;font-size:12px">Da giustificare</span>'}</td>
+              <td style="font-size:12px;color:var(--gy)">${ev.motivazione||ev.note||'—'}</td>
+            </tr>`).join('')}</tbody></table>`}
+        </div>
+        <div id="tsp3" class="hidden">
+          <div style="margin-bottom:10px"><button class="btn bt bsm" onclick="closeM();setTimeout(()=>openM('addNotaAlunno','${i1}','${i2}'),50)">➕ Aggiungi Nota</button></div>
+          ${note.length===0?'<p style="color:var(--gy);font-size:13px">Nessuna nota.</p>':
+            `<table class="tbl"><thead><tr><th>DATA</th><th>TIPO</th><th>NOTA</th><th></th></tr></thead><tbody>
+            ${note.map(n=>`<tr><td style="font-weight:700">${n.data}</td>
+              <td><span style="background:var(--orb);color:var(--or);border-radius:5px;padding:2px 8px;font-size:11px;font-weight:700">${n.tipo}</span></td>
+              <td>${n.testo}</td>
+              <td><button class="btn br bsm" onclick="delNotaStorico('${n.id}','${i1}','${i2}')">🗑️</button></td></tr>`).join('')}
+            </tbody></table>`}
+        </div>
+      </div>
+    `,`<button class="btn bo" onclick="closeM()">Chiudi</button>
+       <button class="btn bt" onclick="closeM();openM('addVotoOrale','${i1}','${i2}')">➕ Voto Orale</button>
+       <button class="btn bor bsm" onclick="closeM();openM('giust','${i1}','${i2}')">📋 Giustificazioni</button>`);
+  }
+  else if(type==='scrutinio'){
+    const cls=d.classi.find(x=>x.id===i1), alunni=d.alunni.filter(a=>a.classeId===i1).sort((a,b)=>a.n-b.n);
+    const ver=d.verifiche.filter(v=>v.classeId===i1), vO=d.votiOrali.filter(v=>v.classeId===i1&&!v.meta);
+    h=mk(`📊 Scrutinio — ${cls?.nome}`,'lg',`
+      <div style="overflow-x:auto"><table class="tbl">
+        <thead><tr><th>ALUNNO</th><th>MEDIA ORALE</th><th>MEDIA SCRITTA</th><th>MEDIA FINALE</th><th>PROPOSTA</th><th>NOTE</th></tr></thead>
+        <tbody>${alunni.map(a=>{
+          const vo=vO.filter(v=>v.aid===a.id), mO=calcM(vo.map(v=>({v:v.val,p:1,ex:v.ex})));
+          const vs=ver.map(v=>{ const e=(v.voti||{})[a.id]; return e&&!e.ex&&e.val!==null&&!isNaN(+e.val)?{v:e.val,p:v.peso,ex:false}:null; }).filter(Boolean);
+          const mS=calcM(vs), arr=[mO,mS].filter(x=>x!==null);
+          const mF=arr.length?arr.reduce((s,x)=>s+x,0)/arr.length:null;
+          return `<tr>
+            <td style="font-weight:700">${a.n}. ${a.nome}</td>
+            <td style="text-align:center;font-weight:900">${fmtM(mO)}</td>
+            <td style="text-align:center;font-weight:900">${fmtM(mS)}</td>
+            <td style="text-align:center;font-weight:900">${fmtM(mF)}</td>
+            <td style="text-align:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:17px">${mF!==null?vL(rndV(mF)):'—'}</td>
+            <td><input type="text" style="width:100%;padding:5px 8px;border:1px solid var(--gyl);border-radius:5px;font-size:12px" placeholder="Note..."></td>
+          </tr>`;}).join('')}
+        </tbody>
+      </table></div>
+    `,`<button class="btn bo" onclick="closeM()">Chiudi</button>`);
+  }
+  else if(type==='editProfilo'){
+    h=mk('✏️ Modifica Profilo',`
+      <div class="fg2"><label>Nome completo</label><input type="text" id="mnome" value="${CUR.nome}"></div>
+      <div class="fg2"><label>Scuola</label><input type="text" id="mscuola" value="${CUR.scuola}"></div>
+      <div class="fg2"><label>Materia</label><input type="text" id="mmat" value="${CUR.materia}"></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="saveProfilo()">💾 Salva</button>`);
+  }
+  else if(type==='cambiaPass'){
+    h=mk('🔑 Cambia Password',`
+      <div class="fg2"><label>Password attuale</label><input type="password" id="mold"></div>
+      <div class="fg2"><label>Nuova password</label><input type="password" id="mnew"></div>
+      <div class="fg2"><label>Conferma</label><input type="password" id="mconf"></div>
+    `,`<button class="btn bo" onclick="closeM()">Annulla</button><button class="btn bt" onclick="savePass()">🔑 Cambia</button>`);
+  }
+
+  gi('MW').innerHTML=h;
+}
+
+function mk(title,sizeOrBody,bodyOrFtr,ftrOrNone){
+  let size='', body, ftr;
+  if(sizeOrBody==='lg'){ size='mlg'; body=bodyOrFtr; ftr=ftrOrNone; }
+  else { body=sizeOrBody; ftr=bodyOrFtr; }
+  return `<div class="mov" onclick="ovClose(event)"><div class="modal ${size}">
+    <div class="mhdr"><h3>${title}</h3><button class="mx" onclick="closeM()">✕</button></div>
+    <div class="mbody">${body}</div>
+    <div class="mftr">${ftr||''}</div>
+  </div></div>`;
+}
+function ovClose(e){ if(e.target.classList.contains('mov')) closeM(); }
+function closeM(){ gi('MW').innerHTML=''; }
+function spTab(el,pid){
+  document.querySelectorAll('.tbi').forEach(t=>t.classList.remove('act')); el.classList.add('act');
+  ['tsp0','tsp1','tsp2','tsp3'].forEach(id=>{ const e=gi(id); if(e) e.classList.toggle('hidden',id!==pid); });
+}
+
+// ═══════════════════════════════════════════════════
+// SAVE FUNCTIONS
+// ═══════════════════════════════════════════════════
+function saveLez(cid, lid){
+  const arg=gv('ma'); if(!arg){ toast('Inserisci l\'argomento.',true); return; }
+  const ds=fmtD(gv('md')), ora=gi('mora')?.value||'1ª';
+  let mat=gi('mmat')?.value||''; if(mat==='__altro__') mat=gv('mmatAltro');
+  const nota=gv('mn'), cmpTesto=gv('mcmp'), cmpPerIl=fmtD(gv('mperil'));
+  let lId=lid;
+  if(lid){
+    const l=D().programma.find(x=>x.id===lid);
+    if(l){ l.data=ds; l.arg=arg; l.nota=nota; l.materia=mat; l.ora=ora; }
+  } else {
+    lId='p'+Date.now();
+    D().programma.push({id:lId,classeId:cid,arg,nota,data:ds,materia:mat,ora});
+  }
+  if(cmpTesto){
+    const ec=D().compiti.find(x=>x.lId===lId);
+    if(ec){ ec.testo=cmpTesto; ec.perIl=cmpPerIl; }
+    else D().compiti.push({id:'c'+Date.now(),classeId:cid,data:ds,testo:cmpTesto,perIl:cmpPerIl,lId});
+  }
+  closeM(); toast('Lezione salvata ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function delLez(id,cid){ CUR.data.programma=D().programma.filter(x=>x.id!==id); renderTab(D().classi.find(x=>x.id===cid)); toast('Eliminata'); }
+function saveMultiOre(cid){
+  const ds=fmtD(gv('md')); const cls=D().classi.find(x=>x.id===cid);
+  const blocks=document.querySelectorAll('.ore-block'); let saved=0;
+  blocks.forEach(bl=>{
+    const ora=bl.querySelector('.ore-sel')?.value||'1ª';
+    const mat=bl.querySelector('.mat-sel')?.value||cls?.materia||'';
+    const arg=bl.querySelector('.arg-inp')?.value.trim()||'';
+    if(arg){ D().programma.push({id:'p'+Date.now()+Math.random(),classeId:cid,arg,nota:'',data:ds,materia:mat,ora}); saved++; }
+  });
+  const cmpTesto=gv('mcmp').trim();
+  if(cmpTesto&&saved>0) D().compiti.push({id:'c'+Date.now(),classeId:cid,data:ds,testo:cmpTesto,perIl:fmtD(gv('mperil')),lId:''});
+  if(!saved){ toast('Inserisci almeno un argomento.',true); return; }
+  closeM(); toast(`${saved} ore firmate ✅`); renderTab(D().classi.find(x=>x.id===cid));
+}
+function aggiungiOraBlock(cid){
+  const cls=D().classi.find(x=>x.id===cid);
+  const mats=[CUR.materia||'',...(CUR.altreMaterie||[])].filter(Boolean);
+  const oreList=['1ª','2ª','3ª','4ª','5ª','6ª','7ª','8ª'];
+  const cont=gi('oreBlocks'); if(!cont) return;
+  const n=cont.querySelectorAll('.ore-block').length;
+  const div=document.createElement('div');
+  div.className='ore-block';
+  div.style.cssText='border:2px solid var(--gyl);border-radius:10px;padding:14px;margin-bottom:10px';
+  div.innerHTML=`<div style="font-weight:800;color:var(--t);margin-bottom:10px;font-size:13px">⏰ Ora ${n+1}</div>
+    <div class="fr">
+      <div class="fg2"><label>Ora</label><select class="ore-sel" style="padding:9px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${oreList.map((o,oi)=>`<option value="${o}"${oi===n?' selected':''}>${o} ora</option>`).join('')}
+      </select></div>
+      <div class="fg2"><label>Materia</label><select class="mat-sel" style="padding:9px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none">
+        ${mats.map(m=>`<option value="${m}">${m}</option>`).join('')}
+      </select></div>
+    </div>
+    <div class="fg2"><label>Argomento</label><input type="text" class="arg-inp" placeholder="Argomento..." style="padding:9px;border:2px solid var(--gyl);border-radius:8px;width:100%;outline:none"></div>`;
+  cont.appendChild(div);
+}
+function saveSupplenza(cid){
+  const ds=fmtD(gv('md')), ora=gi('mora')?.value||'1ª';
+  D().programma.push({id:'p'+Date.now(),classeId:cid,arg:gv('ma')||'Supplenza',nota:gv('mn'),data:ds,materia:gv('msupMat'),ora,supplenzaDi:gv('msupDoc'),isSupplenza:true});
+  closeM(); toast('Supplenza registrata ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function saveCmp(cid){
+  const t=gv('ma'); if(!t){ toast('Inserisci il compito.',true); return; }
+  D().compiti.push({id:'c'+Date.now(),classeId:cid,data:fmtD(gv('md')),testo:t,perIl:fmtD(gv('mperil')),lId:''});
+  closeM(); toast('Compito salvato ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function saveCmpOnLez(cid,lId){
+  const t=gv('ma'); if(!t){ toast('Inserisci il compito.',true); return; }
+  const l=D().programma.find(x=>x.id===lId);
+  D().compiti.push({id:'c'+Date.now(),classeId:cid,data:l?.data||fmtD(td()),testo:t,perIl:fmtD(gv('mperil')),lId});
+  closeM(); toast('Compito aggiunto ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function delCmp(id,cid){ CUR.data.compiti=D().compiti.filter(x=>x.id!==id); renderTab(D().classi.find(x=>x.id===cid)); toast('Eliminato'); }
+
+function saveOra(cid,aid,tipo,data){
+  const orario=gi('morario')?.value; if(!orario){ toast('Inserisci un orario.',true); return; }
+  const note=gv('mn');
+  let ap=D().appello.find(x=>x.aid===aid&&x.cid===cid&&x.data===data);
+  if(!ap){ ap={id:'ap'+aid+data.replace(/\//g,''),aid,cid,data,stato:'P',note:'',ingresso:'',uscita:'',fuoriClasse:''}; D().appello.push(ap); }
+  if(tipo==='ing'){ ap.ingresso=orario; if(ap.stato==='P') ap.stato='R'; }
+  else if(tipo==='usc'){ ap.uscita=orario; if(ap.stato==='P') ap.stato='U'; }
+  else if(tipo==='fc'){ ap.fuoriClasse=orario; if(ap.stato==='P') ap.stato='F'; }
+  if(note) ap.note=note;
+  closeM(); toast('Salvato ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function clearOra(cid,aid,tipo,data){
+  const ap=D().appello.find(x=>x.aid===aid&&x.cid===cid&&x.data===data);
+  if(ap){ if(tipo==='ing'){ap.ingresso='';} else if(tipo==='usc'){ap.uscita='';} else {ap.fuoriClasse='';} ap.stato='P'; }
+  closeM(); toast('Rimosso'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function saveEvMulti(cid){
+  const stato=gi('mstat')?.value||'A', data=fmtD(gv('md')), note=gv('mn');
+  const sel=[...document.querySelectorAll('.selA:checked')].map(cb=>cb.dataset.id);
+  if(!sel.length){ toast('Seleziona almeno un alunno.',true); return; }
+  sel.forEach(aid=>{
+    const ex=D().appello.find(x=>x.aid===aid&&x.cid===cid&&x.data===data);
+    if(ex){ ex.stato=stato; ex.note=note; } else D().appello.push({id:'ap'+Date.now()+Math.random(),aid,cid,data,stato,note,ingresso:'',uscita:'',fuoriClasse:''});
+  });
+  closeM(); toast(`Evento applicato a ${sel.length} alunni ✅`); renderTab(D().classi.find(x=>x.id===cid));
+}
+function giustifica1(evId,cid,aid){
+  const ev=D().appello.find(x=>x.id===evId), motiv=gv('mMotiv')||'Giustificato';
+  if(ev){ ev.giustificato=true; ev.motivazione=motiv; }
+  openM('giust',cid,aid); toast('Giustificato ✓');
+}
+function rimuoviGiust(evId,cid,aid){
+  const ev=D().appello.find(x=>x.id===evId);
+  if(ev){ ev.giustificato=false; ev.motivazione=''; }
+  openM('giust',cid,aid); toast('Giustificazione rimossa');
+}
+function giustificaSelezionati(cid,aid){
+  const motiv=gv('mMotiv')||'Giustificato';
+  const sel=[...document.querySelectorAll('.selA:checked')].map(cb=>cb.dataset.id);
+  if(!sel.length){ toast('Seleziona almeno un evento.',true); return; }
+  sel.forEach(evId=>{ const ev=D().appello.find(x=>x.id===evId); if(ev&&!ev.giustificato){ev.giustificato=true;ev.motivazione=motiv;} });
+  openM('giust',cid,aid); toast(`${sel.length} event${sel.length===1?'o':'i'} giustificat${sel.length===1?'o':'i'} ✅`);
+}
+function saveSessOraleMensile(cid){
+  const et=gv('met')||'Sessione Mensile';
+  const materia=gi('mmateria')?.value||D().classi.find(x=>x.id===cid)?.materia||'';
+  const sid='so'+Date.now();
+  const alunni=D().alunni.filter(a=>a.classeId===cid);
+  const refData=fmtD(gi('mdDef')?.value||td());
+  D().votiOrali.push({id:'vM'+Date.now(),sId:sid,classeId:cid,aid:'__meta__',val:null,data:refData,et,materia,ex:false,comm:'',meta:true});
+  let saved=0;
+  alunni.forEach(a=>{
+    const lbl=gi('msv_'+a.id)?.value; if(!lbl) return;
+    const dataInp=gi('msd_'+a.id)?.value; if(!dataInp) return;
+    const ex=gi('msx_'+a.id)?.checked||false;
+    const comm=gi('msc_'+a.id)?.value||'';
+    const data=fmtD(dataInp);
+    D().votiOrali.push({id:'vo'+Date.now()+Math.random(),sId:sid,classeId:cid,aid:a.id,val:vV(lbl),data,et,materia,ex,comm});
+    saved++;
+  });
+  closeM();
+  if(saved===0) toast('Nessun voto inserito — sessione creata vuota.',false);
+  else toast(`Sessione mensile salvata: ${saved} voti ✅`);
+  renderTab(D().classi.find(x=>x.id===cid));
+}
+function saveSessOrale(cid){
+  const data=fmtD(gv('md')), et=gv('met')||data, sid='so'+Date.now();
+  const materia=gi('mmateria')?.value||D().classi.find(x=>x.id===cid)?.materia||'';
+  D().votiOrali.push({id:'vM'+Date.now(),sId:sid,classeId:cid,aid:'__meta__',val:null,data,et,materia,ex:false,comm:'',meta:true});
+  closeM(); toast('Sessione creata ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function updateSessOrale(cid,sid){
+  const data=fmtD(gv('md')), et=gv('met');
+  D().votiOrali.filter(v=>v.sId===sid).forEach(v=>{ v.data=data; if(et) v.et=et; });
+  closeM(); toast('Sessione aggiornata ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function delSessOrale(cid,sid){ CUR.data.votiOrali=D().votiOrali.filter(v=>v.sId!==sid); toast('Sessione eliminata'); renderTab(D().classi.find(x=>x.id===cid)); }
+function saveVotoOrale(cid,aid){
+  const lbl=gi('mvoto')?.value; if(!lbl){ toast('Seleziona un voto.',true); return; }
+  const val=vV(lbl), ex=gi('mex')?.value==='si', comm=gv('mcomm'), data=fmtD(gv('md'));
+  let sId=gi('msId')?.value||'', et='';
+  if(sId==='__new__'){ sId='so'+Date.now(); et=gv('mNewEt')||data; D().votiOrali.push({id:'vM'+Date.now(),sId,classeId:cid,aid:'__meta__',val:null,data,et,ex:false,comm:'',meta:true}); }
+  else if(sId){ const s=D().votiOrali.find(v=>v.sId===sId); et=s?.et||sId; }
+  else { sId='free_'+Date.now(); et=data; }
+  const ex2=D().votiOrali.find(v=>v.sId===sId&&v.aid===aid&&!v.meta);
+  if(ex2){ ex2.val=val; ex2.ex=ex; ex2.comm=comm; ex2.data=data; }
+  else D().votiOrali.push({id:'vo'+Date.now(),sId,classeId:cid,aid,val,data,et,ex,comm});
+  closeM(); toast('Voto salvato ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function saveEditVotoOrale(cid,sid,aid){
+  const lbl=gi('mvoto')?.value, ex=gi('mex')?.value==='si', comm=gv('mcomm');
+  const vt=D().votiOrali.find(v=>v.sId===sid&&v.aid===aid&&!v.meta);
+  if(!lbl){ if(vt) CUR.data.votiOrali=D().votiOrali.filter(x=>x.id!==vt.id); closeM(); toast('Voto rimosso'); }
+  else { if(vt){ vt.val=vV(lbl); vt.ex=ex; vt.comm=comm; } closeM(); toast('Voto salvato ✅'); }
+  renderTab(D().classi.find(x=>x.id===cid));
+}
+function delVotoOrale(id,cid){ CUR.data.votiOrali=D().votiOrali.filter(x=>x.id!==id); closeM(); toast('Eliminato'); renderTab(D().classi.find(x=>x.id===cid)); }
+function saveVerifica(cid){
+  const et=gv('met')||'Verifica';
+  const materia=gi('mmateria')?.value||D().classi.find(x=>x.id===cid)?.materia||'';
+  D().verifiche.push({id:'v'+Date.now(),classeId:cid,data:fmtD(gv('md')),tipo:gi('mtipo')?.value||'Scritto',et,materia,peso:+(gi('mpeso')?.value||100),desc:gv('mdesc'),voti:{}});
+  closeM(); toast('Prova creata ✅ — Clicca l\'intestazione per inserire i voti'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function saveEditVerifica(cid,vid){
+  const ver=D().verifiche.find(x=>x.id===vid);
+  if(ver){ ver.data=fmtD(gv('md')); ver.tipo=gi('mtipo')?.value; ver.et=gv('met'); ver.peso=+(gi('mpeso')?.value||100); ver.desc=gv('mdesc'); ver.materia=gi('mmateria')?.value||ver.materia; }
+  closeM(); toast('Prova aggiornata ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function delVerifica(vid,cid){ CUR.data.verifiche=D().verifiche.filter(x=>x.id!==vid); toast('Prova eliminata'); renderTab(D().classi.find(x=>x.id===cid)); }
+function saveVotiVer(cid,vid){
+  const ver=D().verifiche.find(x=>x.id===vid); if(!ver){ closeM(); return; }
+  D().alunni.filter(a=>a.classeId===cid).forEach(a=>{
+    const lbl=gi('vv_'+a.id)?.value, ex=gi('vx_'+a.id)?.checked||false, cm=gi('vc_'+a.id)?.value||'';
+    if(lbl&&lbl!==''){
+      const isTag=['Assente','Esonero'].includes(lbl);
+      ver.voti[a.id]={val:isTag?lbl:vV(lbl),ex:ex||isTag,commP:cm};
+    } else delete ver.voti[a.id];
+  });
+  closeM(); toast('Voti salvati ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function saveNotaGen(cid){
+  const testo=gv('ma');
+  if(!testo){ toast('Scrivi la nota.',true); return; }
+  D().note.push({id:'n'+Date.now(),aid:null,cid,data:fmtD(gv('md')),tipo:gi('mtipo')?.value||'Nota Collettiva',testo});
+  closeM(); toast('Nota generale salvata ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function saveNotaAlunno(cid,aid){
+  const testo=gv('ma');
+  if(!testo){ toast('Scrivi la nota.',true); return; }
+  D().note.push({id:'n'+Date.now(),aid,cid,data:fmtD(gv('md')),tipo:gi('mtipo')?.value||'Nota Disciplinare',testo});
+  closeM(); toast('Nota salvata ✅');
+  setTimeout(()=>openM('profilo',cid,aid),80);
+}
+function delNotaStorico(nid,cid,aid){
+  CUR.data.note=D().note.filter(x=>x.id!==nid);
+  toast('Nota eliminata');
+  setTimeout(()=>openM('profilo',cid,aid),80);
+}
+function saveNota(cid){
+  const aid=gi('maid')?.value, testo=gv('ma');
+  if(!aid||!testo){ toast('Seleziona un alunno e scrivi la nota.',true); return; }
+  D().note.push({id:'n'+Date.now(),aid,cid,data:fmtD(gv('md')),tipo:gi('mtipo')?.value||'Nota Disciplinare',testo});
+  closeM(); toast('Nota salvata ✅'); renderTab(D().classi.find(x=>x.id===cid));
+}
+function delNota(id,cid){ CUR.data.note=D().note.filter(x=>x.id!==id); renderTab(D().classi.find(x=>x.id===cid)); toast('Eliminata'); }
+function savePianificazione(cid){
+  if(!D().lezioniPianificate) CUR.data.lezioniPianificate=[];
+  const celle=window._pCelle||[];
+  let added=0;
+  celle.forEach(c=>{
+    const chk=gi('chk_'+c.idx); if(!chk||!chk.checked) return;
+    const mat=gi('pmat_'+c.idx)?.value||'';
+    const arg=gi('parg_'+c.idx)?.value||'';
+    D().lezioniPianificate.push({id:'lp'+Date.now()+Math.random(),classeId:cid,data:fmtD(c.iso),ora:c.ora,materia:mat,arg,nota:''});
+    added++;
+  });
+  closeM(); toast(`${added} lezioni pianificate ✅`); pgOr(gi('MC'));
+}
+function confermaPianificata(lid,cid){
+  if(!D().lezioniPianificate) return;
+  const lp=D().lezioniPianificate.find(x=>x.id===lid); if(!lp) return;
+  D().programma.push({id:'p'+Date.now(),classeId:cid,arg:lp.arg||'(argomento da definire)',nota:lp.nota||'',data:lp.data,materia:lp.materia,ora:lp.ora});
+  CUR.data.lezioniPianificate=D().lezioniPianificate.filter(x=>x.id!==lid);
+  toast('Lezione confermata e aggiunta al giornale ✅'); pgOr(gi('MC'));
+}
+function confermatutte(cid){
+  if(!D().lezioniPianificate) return;
+  const lps=D().lezioniPianificate.filter(x=>x.classeId===cid);
+  lps.forEach(lp=>{
+    D().programma.push({id:'p'+Date.now()+Math.random(),classeId:cid,arg:lp.arg||'(argomento da definire)',nota:lp.nota||'',data:lp.data,materia:lp.materia,ora:lp.ora});
+  });
+  CUR.data.lezioniPianificate=D().lezioniPianificate.filter(x=>x.classeId!==cid);
+  toast(`${lps.length} lezioni confermate ✅`); pgOr(gi('MC'));
+}
+function delPianificata(lid,cid){
+  CUR.data.lezioniPianificate=D().lezioniPianificate.filter(x=>x.id!==lid);
+  toast('Eliminata'); pgOr(gi('MC'));
+}
+function saveEditPianificata(cid,lid){
+  const lp=D().lezioniPianificate?.find(x=>x.id===lid); if(!lp){ closeM(); return; }
+  lp.data=fmtD(gv('md')); lp.ora=gi('mora')?.value||lp.ora;
+  lp.materia=gi('mmat')?.value||lp.materia;
+  lp.arg=gv('ma'); lp.nota=gv('mn');
+  closeM(); toast('Aggiornata ✅'); pgOr(gi('MC'));
+}
+function saveOrario(cid,key){
+  if(!D().orario[cid]) CUR.data.orario[cid]={};
+  D().orario[cid][key]={mat:gv('mmat'),note:gv('mn')};
+  closeM(); toast('Orario aggiornato ✅'); pgOr(gi('MC'));
+}
+function clearOrario(cid,key){ if(D().orario[cid]) delete D().orario[cid][key]; toast('Cancellato'); pgOr(gi('MC')); }
+function saveClasse(eid){
+  const nome=gv('mnome').toUpperCase(), mat=gv('mmat'), sede=gv('msede');
+  if(!nome||!mat){ toast('Inserisci nome e materia.',true); return; }
+  const altreM=gv('maltreM').split('\n').map(s=>s.trim()).filter(Boolean);
+  const maxProve=parseInt(gi('mmaxProve')?.value||'0',10)||0;
+  const maxOra=parseInt(gi('mmaxOra')?.value||'0',10)||0;
+  if(eid){ const cls=D().classi.find(x=>x.id===eid); if(cls){cls.nome=nome;cls.materia=mat;cls.sede=sede;cls.altreMaterie=altreM;cls.maxProve=maxProve;cls.maxOra=maxOra;} }
+  else { if(D().classi.find(x=>x.id===nome)){ toast('Classe già esistente.',true); return; } D().classi.push({id:nome,nome,materia:mat,sede,altreMaterie:altreM,maxProve,maxOra}); }
+  closeM(); toast('Classe salvata ✅'); pgCls(gi('MC'));
+}
+function delClasse(id){
+  if(!confirm('Eliminare questa classe e tutti i suoi dati?')) return;
+  CUR.data.classi=D().classi.filter(x=>x.id!==id);
+  CUR.data.alunni=D().alunni.filter(x=>x.classeId!==id);
+  CUR.data.votiOrali=D().votiOrali.filter(x=>x.classeId!==id);
+  CUR.data.verifiche=D().verifiche.filter(x=>x.classeId!==id);
+  CUR.data.appello=D().appello.filter(x=>x.cid!==id);
+  CUR.data.compiti=D().compiti.filter(x=>x.classeId!==id);
+  CUR.data.note=D().note.filter(x=>x.cid!==id);
+  CUR.data.programma=D().programma.filter(x=>x.classeId!==id);
+  if(D().orario[id]) delete CUR.data.orario[id];
+  toast('Classe eliminata'); pgCls(gi('MC'));
+}
+function saveAlunni(cid){
+  const raw=gv('malunni');
+  const nomi=raw.split('\n').map(l=>l.trim().toUpperCase()).filter(Boolean);
+  if(!nomi.length){ toast('Inserisci almeno un nome.',true); return; }
+  let added=0;
+  nomi.forEach(nm=>{ if(!D().alunni.find(a=>a.nome===nm&&a.classeId===cid)){ D().alunni.push({id:'a'+Date.now()+Math.random(),classeId:cid,nome:nm,n:0}); added++; } });
+  rinumera(cid); closeM(); toast(`${added} alunni aggiunti ✅`); pgCls(gi('MC'));
+}
+function delAlunno(id,cid){
+  if(!confirm('Eliminare questo alunno e tutti i suoi dati?')) return;
+  CUR.data.alunni=D().alunni.filter(x=>x.id!==id);
+  CUR.data.votiOrali=D().votiOrali.filter(x=>x.aid!==id);
+  CUR.data.appello=D().appello.filter(x=>x.aid!==id);
+  CUR.data.note=D().note.filter(x=>x.aid!==id);
+  D().verifiche.forEach(v=>{ if(v.voti&&v.voti[id]) delete v.voti[id]; });
+  rinumera(cid); toast('Alunno eliminato'); pgCls(gi('MC'));
+}
+function rinumera(cid){
+  const al=D().alunni.filter(a=>a.classeId===cid).sort((a,b)=>a.nome.localeCompare(b.nome,'it'));
+  al.forEach((a,i)=>a.n=i+1);
+}
+function saveMsg(){
+  const t=gv('ma'); if(!t){ toast('Inserisci il testo.',true); return; }
+  D().bacheca.unshift({id:'b'+Date.now(),data:fmtD(td()),cat:gi('mcat')?.value||'DOCUMENTI',num:gv('mnum'),msg:t,autore:CUR.nome,letto:false});
+  closeM(); toast('Pubblicato ✅'); pgBach(gi('MC'));
+}
+function saveEvento(){
+  const t=gv('ma'); if(!t){ toast('Inserisci una descrizione.',true); return; }
+  const tipo=gi('mtipo')?.value||'promemoria';
+  const cols={annotazione:'#e85d5d',promemoria:'#2eaab1',personale:'#f5a623',compiti:'#27ae60'};
+  D().eventi.push({id:'e'+Date.now(),data:fmtD(gv('md')),tipo,testo:t,col:cols[tipo]||'#2eaab1'});
+  closeM(); toast('Evento aggiunto ✅'); pgCal(gi('MC'));
+}
+function saveEventoClasse(){
+  const t=gv('ma'); if(!t){ toast('Inserisci una descrizione.',true); return; }
+  const tipo=gi('mtipo')?.value||'verifica';
+  const clsId=gi('mclsId')?.value;
+  const cls=D().classi.find(x=>x.id===clsId);
+  const cols={verifica:'#8e44ad',interrogazione:'#2980b9',consegna:'#27ae60',annotazione:'#e85d5d',promemoria:'#2eaab1'};
+  D().eventi.push({id:'e'+Date.now(),data:fmtD(gv('md')),tipo,testo:t,col:cols[tipo]||'#8e44ad',clsId,clsNome:cls?.nome});
+  closeM(); toast('Evento classe aggiunto ✅'); pgCal(gi('MC'));
+}
+function saveEditEvento(eid){
+  const ev=D().eventi.find(x=>x.id===eid); if(!ev){ closeM(); return; }
+  const tipo=gi('mtipo')?.value||ev.tipo;
+  const cols={annotazione:'#e85d5d',promemoria:'#2eaab1',personale:'#f5a623',compiti:'#27ae60',verifica:'#8e44ad',interrogazione:'#2980b9',consegna:'#27ae60'};
+  ev.data=fmtD(gv('md')); ev.tipo=tipo; ev.testo=gv('ma')||ev.testo; ev.col=cols[tipo]||ev.col;
+  const newCls=gi('mclsId')?.value;
+  if(newCls){ const cls=D().classi.find(x=>x.id===newCls); ev.clsId=newCls; ev.clsNome=cls?.nome; }
+  closeM(); toast('Evento aggiornato ✅'); pgCal(gi('MC'));
+}
+function delEvento(eid){ CUR.data.eventi=D().eventi.filter(x=>x.id!==eid); closeM(); toast('Eliminato'); pgCal(gi('MC')); }
+function saveProfilo(){
+  const n=gv('mnome'), sc=gv('mscuola'), m=gv('mmat');
+  if(!n||!sc||!m){ toast('Compila tutti i campi.',true); return; }
+  CUR.nome=n; CUR.scuola=sc; CUR.materia=m;
+  gi('hNm').textContent=n; gi('hSc').textContent=sc;
+  gi('hAv').textContent=n.split(' ').map(x=>x[0]).slice(0,2).join('');
+  saveLS(); closeM(); toast('Profilo aggiornato ✅');
+}
+function savePass(){
+  const o=gi('mold')?.value, n=gi('mnew')?.value, c=gi('mconf')?.value;
+  if(o!==CUR.password){ toast('Password attuale errata.',true); return; }
+  if(n.length<6){ toast('Almeno 6 caratteri.',true); return; }
+  if(n!==c){ toast('Le password non coincidono.',true); return; }
+  CUR.password=n; saveLS(); closeM(); toast('Password cambiata 🔑');
+}
+
+// ═══════════════════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════════════════
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') closeM();
+  if(e.key==='Enter' && !gi('LP').classList.contains('hidden')){
+    if(!gi('RF').classList.contains('hidden')) doReg(); else doLogin();
+  }
+});
+</script>
+</body>
+</html>
